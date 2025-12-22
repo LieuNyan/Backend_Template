@@ -1,0 +1,20 @@
+{
+  "name": "@LieuNyan/prisma",
+  "description": "Prisma schema for the LieuNyan backend",
+  "author": "LieuNyan",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "generate": "prisma generate",
+    "push": "prisma db push",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.2.0"
+  },
+  "devDependencies": {
+    "prisma": "^7.2.0"
+  }
+}
