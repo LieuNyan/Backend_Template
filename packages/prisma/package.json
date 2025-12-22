@@ -1,6 +1,6 @@
 {
-  "name": "@LieuNyan/prisma",
-  "description": "Prisma schema for the LieuNyan backend",
+  "name": "@backend-template/prisma",
+  "description": "Prisma schema for the backend-template",
   "author": "LieuNyan",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

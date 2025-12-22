@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2022",
     "module": "commonjs",
+    "moduleResolution": "Node",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -9,7 +10,8 @@
     "baseUrl": ".",
     "paths": {
       "@LieuNyan/prisma": ["packages/prisma/src"]
-    }
+    },
+    "types": ["node"]
   },
   "exclude": ["node_modules", "dist"]
 }

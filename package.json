@@ -1,11 +1,11 @@
 {
-  "name": "LieuNyan-backend-template",
+  "name": "backend-template",
   "description": "A Kubernetes-based monorepo backend template featuring NestJS, Prisma, and PostgreSQL.",
   "author": "LieuNyan",
   "private": true,
   "scripts": {
-    "prisma:generate": "pnpm --filter @LieuNyan/prisma generate",
-    "prisma:push:local": "NODE_ENV=local pnpm --filter @LieuNyan/prisma push"
+    "prisma:generate": "pnpm --filter @backend-template/prisma generate",
+    "prisma:push:local": "NODE_ENV=local pnpm --filter @backend-template/prisma push"
   },
   "dependencies": {
     "dotenv-flow": "^4.1.0"
