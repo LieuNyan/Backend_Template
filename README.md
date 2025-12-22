@@ -11,20 +11,10 @@ NestJS, Prisma, PostgreSQL을 중심으로 구성되었으며,
 1. **패키지 매니저: pnpm 필수**
 
    - 모노레포 구성 및 패키지 종속성 관리를 위해 pnpm을 사용합니다.
-   - 예시: `pnpm install`, `pnpm -w add <package>`
 
 2. **Node.js 22 이상 권장**
 
    - 최신 런타임 기능(ES2022) 및 안정성을 위해 Node.js 22.x를 사용합니다.
-   - root `package.json`의 엔진 요구사항:
-
-   ```jsonc
-   {
-     "engines": {
-       "node": "22.x"
-     }
-   }
-   ```
 
 3. **환경 변수 파일은 루트 디렉토리에 위치**
 
