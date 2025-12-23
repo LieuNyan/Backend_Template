@@ -10,7 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@LieuNyan/prisma": ["packages/prisma/src"]
+      "@backend-template/prisma": ["packages/prisma/src"]
     },
     "types": ["node"]
   },
