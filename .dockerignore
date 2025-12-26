@@ -1,0 +1,17 @@
+# dependencies
+node_modules
+.pnpm-store
+
+# frontend only
+apps/**/.next
+apps/**/out
+apps/**/build
+
+# vcs / os
+.git
+.DS_Store
+
+# infra
+infra/**/tmp
+infra/**/secrets
+docker-data

@@ -17,6 +17,7 @@ export default defineConfig({
     path: path.join(__dirname, 'migrations'),
   },
   datasource: {
-    url: env('DATABASE_URL'),
+    // if PRISMA_SKIP_DATASOURCE is set to 1, skip the datasource (when building the image)
+    url: process.env.PRISMA_SKIP_DATASOURCE === '1' ? undefined : env('DATABASE_URL'),
   },
 }) satisfies PrismaConfig;

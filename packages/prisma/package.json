@@ -2,8 +2,8 @@
   "name": "@backend-template/prisma",
   "description": "Prisma schema for the backend-template",
   "author": "LieuNyan",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "generate": "prisma generate",
     "push": "prisma db push",
@@ -12,7 +12,8 @@
     "studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^7.2.0"
+    "@prisma/client": "^7.2.0",
+    "@prisma/client-runtime-utils": "7.2.0"
   },
   "devDependencies": {
     "prisma": "^7.2.0"

@@ -21,6 +21,9 @@ importers:
       '@nestjs/schematics':
         specifier: ^11.0.0
         version: 11.0.9(chokidar@4.0.3)(typescript@5.9.3)
+      '@types/dotenv-flow':
+        specifier: ^3.3.0
+        version: 3.3.3
       '@types/node':
         specifier: ^25.0.3
         version: 25.0.3
@@ -48,6 +51,9 @@ importers:
 
   apps/main-service:
     dependencies:
+      '@backend-template/prisma':
+        specifier: workspace:*
+        version: link:../../packages/prisma
       '@nestjs/common':
         specifier: ^11.0.1
         version: 11.1.10(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -63,9 +69,6 @@ importers:
       '@prisma/adapter-pg':
         specifier: ^7.2.0
         version: 7.2.0
-      '@prisma/client':
-        specifier: ^7.2.0
-        version: 7.2.0(prisma@7.2.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)
       pg:
         specifier: ^8.16.3
         version: 8.16.3
@@ -85,6 +88,9 @@ importers:
       '@prisma/client':
         specifier: ^7.2.0
         version: 7.2.0(prisma@7.2.0(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)
+      '@prisma/client-runtime-utils':
+        specifier: 7.2.0
+        version: 7.2.0
     devDependencies:
       prisma:
         specifier: ^7.2.0
@@ -597,6 +603,9 @@ packages:
 
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
+
+  '@types/dotenv-flow@3.3.3':
+    resolution: {integrity: sha512-aJjBsKw4bfGjvaRwrxBtEOfYZxCAq+LiFTpZ4DGTEK2b9eLVt/IAClapSxMfgV4Mi/2bIBKKjoTCO0lOh4ACLg==}
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -2794,6 +2803,8 @@ snapshots:
   '@tsconfig/node14@1.0.3': {}
 
   '@tsconfig/node16@1.0.4': {}
+
+  '@types/dotenv-flow@3.3.3': {}
 
   '@types/eslint-scope@3.7.7':
     dependencies:

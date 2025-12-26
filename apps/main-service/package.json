@@ -4,15 +4,16 @@
   "author": "LieuNyan",
   "private": true,
   "scripts": {
+    "build": "nest build",
     "start:watch": "nest start --watch"
   },
   "dependencies": {
+    "@backend-template/prisma": "workspace:*",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/terminus": "^11.0.0",
     "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "^7.2.0",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
