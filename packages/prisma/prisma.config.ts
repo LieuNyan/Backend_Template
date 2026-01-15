@@ -17,7 +17,10 @@ export default defineConfig({
     path: path.join(__dirname, 'migrations'),
   },
   datasource: {
-    // if PRISMA_SKIP_DATASOURCE is set to 1, skip the datasource (when building the image)
+    /**
+     * 빌드 시 PRISMA_SKIP_DATASOURCE가 1로 설정되면, 데이터베이스 연결 정보를 무시합니다.
+     * @note For Docker image build
+     */
     url: process.env.PRISMA_SKIP_DATASOURCE === '1' ? undefined : env('DATABASE_URL'),
   },
 }) satisfies PrismaConfig;
