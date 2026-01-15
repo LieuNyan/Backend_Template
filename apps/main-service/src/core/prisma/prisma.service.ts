@@ -3,12 +3,13 @@ import { PrismaClient } from '@prisma/generated';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Injectable } from '@nestjs/common/decorators';
+import { envConfig } from '../../config/env';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   constructor() {
     const pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
+      connectionString: envConfig.DATABASE_URL,
       max: 5,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
