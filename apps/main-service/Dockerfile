@@ -41,6 +41,6 @@ WORKDIR /app
 COPY --from=deploy /out/ /app/
 
 WORKDIR /app/apps/main-service
-# CMD ["node", "dist/main.js"]
+CMD ["node", "dist/main.js"]
 
 EXPOSE 3000
