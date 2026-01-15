@@ -1,15 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import path from 'node:path';
-import { config as dotenvFlowConfig } from 'dotenv-flow';
+import { validateEnv } from './config/env';
 
-// Monorepo root directory
-const rootDir = path.resolve(__dirname, '../../..');
-
-// Load environment variables from root directory
-dotenvFlowConfig({
-  path: rootDir,
-});
+// Validate environment variables when the application starts
+validateEnv();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
