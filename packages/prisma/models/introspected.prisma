@@ -1,0 +1,2758 @@
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model AdditionalSubsidies {
+  id            Int      @id @default(autoincrement())
+  title         String?  @db.VarChar(255)
+  gov_subsidy   Int?
+  local_subsidy Int?
+  year          Int
+  priority      Boolean  @default(false)
+  docs          Json
+  use_area      String   @db.VarChar(255)
+  createdAt     DateTime @db.DateTime(0)
+  updatedAt     DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model AfterServiceFiles {
+  id               Int            @id @default(autoincrement())
+  file_name        String         @default("") @db.VarChar(255)
+  file_url         String         @default("") @db.VarChar(255)
+  file_type        Int            @default(0)
+  is_secure        Boolean        @default(false)
+  after_service_id Int?
+  createdAt        DateTime       @db.DateTime(0)
+  updatedAt        DateTime       @db.DateTime(0)
+  AfterServices    AfterServices? @relation(fields: [after_service_id], references: [id], onDelete: Restrict, map: "afterservicefiles_ibfk_1")
+
+  @@index([after_service_id], map: "after_service_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model AfterServices {
+  id                       Int                       @id @default(autoincrement())
+  as_number                String?                   @db.VarChar(255)
+  status                   Int                       @default(0)
+  mileage                  Int                       @default(0)
+  as_types                 Json?
+  symptom                  String?                   @db.Text
+  request                  String?                   @db.Text
+  expected_process_date    DateTime?                 @db.DateTime(0)
+  pickup_method            Int?
+  pickup_address           String?                   @db.VarChar(255)
+  completed_date           DateTime?                 @db.DateTime(0)
+  result                   String?                   @db.Text
+  result_types             Json?
+  as_cost_type             Int?
+  as_cost                  Int?
+  memos                    Json?
+  is_pinned                Boolean                   @default(false)
+  rental_id                Int?
+  purchase_id              Int?
+  createdAt                DateTime                  @db.DateTime(0)
+  updatedAt                DateTime                  @db.DateTime(0)
+  AfterServiceFiles        AfterServiceFiles[]
+  Rentals                  Rentals?                  @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "afterservices_ibfk_1069")
+  Purchases                Purchases?                @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "afterservices_ibfk_1070")
+  MessageJoinAfterServices MessageJoinAfterServices?
+
+  @@index([purchase_id], map: "purchase_id")
+  @@index([rental_id], map: "rental_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Agreements {
+  id             Int              @id @default(autoincrement())
+  title          String           @default("") @db.VarChar(255)
+  content        String           @db.Text
+  is_used        Boolean          @default(false)
+  createdAt      DateTime         @db.DateTime(0)
+  updatedAt      DateTime         @db.DateTime(0)
+  UserAgreements UserAgreements[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model AlarmMails {
+  id             Int       @id @default(autoincrement())
+  subject        String?   @db.VarChar(255)
+  template       String?   @db.VarChar(255)
+  context        Json?
+  emails         Json?
+  mail_sent      Boolean   @default(false)
+  mail_sent_date DateTime? @db.DateTime(0)
+  createdAt      DateTime  @db.DateTime(0)
+  updatedAt      DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Alarms {
+  id            Int      @id @default(autoincrement())
+  title         String?  @db.VarChar(255)
+  content       String?  @db.VarChar(255)
+  link          String?  @db.VarChar(255)
+  type          Int?
+  is_read       Boolean?
+  alimtalk      Json?
+  alimtalk_sent Boolean?
+  user_id       Int?
+  createdAt     DateTime @db.DateTime(0)
+  updatedAt     DateTime @db.DateTime(0)
+  Users         Users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "alarms_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model AuctionFiles {
+  id         Int       @id @default(autoincrement())
+  file_name  String    @default("") @db.VarChar(255)
+  file_url   String    @default("") @db.VarChar(255)
+  type       Int       @default(0)
+  auction_id Int?
+  createdAt  DateTime  @db.DateTime(0)
+  updatedAt  DateTime  @db.DateTime(0)
+  Auctions   Auctions? @relation(fields: [auction_id], references: [id], onDelete: Restrict, map: "auctionfiles_ibfk_1")
+
+  @@index([auction_id], map: "auction_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Auctions {
+  id                    Int            @id @default(autoincrement())
+  year                  Int?
+  mileage               Int?
+  qtn_key               Int?
+  qtn_key_smart         Int?
+  tune_muffler          Boolean?
+  tune_muffler_approved Boolean?
+  tune_dashcam          Boolean?
+  tune_dashcam_location Int?
+  tune_etc              Boolean?
+  tune_etc_content      String?        @db.Text
+  history_checkup       Json?
+  desc                  String?        @db.Text
+  auction_value         Int?
+  accept_bidding        Boolean?
+  status                Int            @default(0)
+  user_id               Int?
+  purchase_id           Int?
+  bike_model_id         Int?
+  createdAt             DateTime       @db.DateTime(0)
+  updatedAt             DateTime       @db.DateTime(0)
+  AuctionFiles          AuctionFiles[]
+  Users                 Users?         @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "auctions_ibfk_7764")
+  Purchases             Purchases?     @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "auctions_ibfk_7765")
+  BikeModels            BikeModels?    @relation(fields: [bike_model_id], references: [id], onDelete: Restrict, map: "auctions_ibfk_7766")
+
+  @@index([bike_model_id], map: "bike_model_id")
+  @@index([purchase_id], map: "purchase_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Banners {
+  id        Int       @id @default(autoincrement())
+  type      Int       @default(0)
+  url       String    @default("0") @db.VarChar(255)
+  contents  String    @db.Text
+  createdAt DateTime  @db.DateTime(0)
+  updatedAt DateTime  @db.DateTime(0)
+  deletedAt DateTime? @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeGetLinks {
+  id              Int           @id @default(autoincrement())
+  status          Int           @default(0)
+  bike_get_id     Int?
+  bike_product_id Int?
+  chat_id         Int?
+  createdAt       DateTime      @db.DateTime(0)
+  updatedAt       DateTime      @db.DateTime(0)
+  BikeGets        BikeGets?     @relation(fields: [bike_get_id], references: [id], onDelete: Restrict, map: "bikegetlinks_ibfk_8098")
+  BikeProducts    BikeProducts? @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "bikegetlinks_ibfk_8099")
+  Chats           Chats?        @relation(fields: [chat_id], references: [id], onDelete: Restrict, map: "bikegetlinks_ibfk_8100")
+
+  @@index([bike_get_id], map: "bike_get_id")
+  @@index([bike_product_id], map: "bike_product_id")
+  @@index([chat_id], map: "chat_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeGetUploadFiles {
+  id                 Int             @id @default(autoincrement())
+  file_name          String          @default("0") @db.VarChar(255)
+  file_url           String          @default("0") @db.VarChar(255)
+  bike_get_upload_id Int?
+  createdAt          DateTime        @db.DateTime(0)
+  updatedAt          DateTime        @db.DateTime(0)
+  deletedAt          DateTime?       @db.DateTime(0)
+  BikeGetUploads     BikeGetUploads? @relation(fields: [bike_get_upload_id], references: [id], onDelete: Restrict, map: "bikegetuploadfiles_ibfk_1")
+
+  @@index([bike_get_upload_id], map: "bike_get_upload_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeGetUploads {
+  id                    Int                     @id @default(autoincrement())
+  link                  String?                 @default("") @db.VarChar(255)
+  desc                  String                  @db.Text
+  price                 Int                     @default(0)
+  year                  Int                     @default(0)
+  displacement          Int                     @default(0)
+  mileage               Int                     @default(0)
+  status                Int                     @default(0)
+  user_id               Int?
+  bike_get_id           Int?
+  chat_id               Int?
+  bike_model_id         Int?
+  createdAt             DateTime                @db.DateTime(0)
+  updatedAt             DateTime                @db.DateTime(0)
+  BikeGetUploadFiles    BikeGetUploadFiles[]
+  Users                 Users?                  @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "bikegetuploads_ibfk_10773")
+  BikeGets              BikeGets?               @relation(fields: [bike_get_id], references: [id], onDelete: Restrict, map: "bikegetuploads_ibfk_10774")
+  Chats                 Chats?                  @relation(fields: [chat_id], references: [id], onDelete: Restrict, map: "bikegetuploads_ibfk_10775")
+  BikeModels            BikeModels?             @relation(fields: [bike_model_id], references: [id], onDelete: Restrict, map: "bikegetuploads_ibfk_10776")
+  BikeInspectionReports BikeInspectionReports[]
+
+  @@index([bike_get_id], map: "bike_get_id")
+  @@index([bike_model_id], map: "bike_model_id")
+  @@index([chat_id], map: "chat_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeGets {
+  id                             Int              @id @default(autoincrement())
+  year_range                     Json
+  price_range                    Json
+  type                           Int              @default(0)
+  etc                            Json
+  status                         Int              @default(0)
+  delivery_method                Int?
+  visit_date                     DateTime?        @db.DateTime(0)
+  bike_model_id                  Int?
+  user_id                        Int?
+  admin_id                       Int?
+  createdAt                      DateTime         @db.DateTime(0)
+  updatedAt                      DateTime         @db.DateTime(0)
+  deletedAt                      DateTime?        @db.DateTime(0)
+  BikeGetLinks                   BikeGetLinks[]
+  BikeGetUploads                 BikeGetUploads[]
+  BikeModels                     BikeModels?      @relation(fields: [bike_model_id], references: [id], onDelete: Restrict, map: "bikegets_ibfk_586")
+  Users_BikeGets_user_idToUsers  Users?           @relation("BikeGets_user_idToUsers", fields: [user_id], references: [id], onDelete: Restrict, map: "bikegets_ibfk_587")
+  Users_BikeGets_admin_idToUsers Users?           @relation("BikeGets_admin_idToUsers", fields: [admin_id], references: [id], onDelete: Restrict, map: "bikegets_ibfk_588")
+  ChatRooms                      ChatRooms[]
+  Payments                       Payments[]
+
+  @@index([admin_id], map: "admin_id")
+  @@index([bike_model_id], map: "bike_model_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeInspectionReportFiles {
+  id                        Int                    @id @default(autoincrement())
+  key                       String                 @default("0") @db.VarChar(255)
+  file_name                 String                 @default("0") @db.VarChar(255)
+  file_url                  String                 @default("0") @db.VarChar(255)
+  bike_inspection_report_id Int?
+  createdAt                 DateTime               @db.DateTime(0)
+  updatedAt                 DateTime               @db.DateTime(0)
+  BikeInspectionReports     BikeInspectionReports? @relation(fields: [bike_inspection_report_id], references: [id], onDelete: Restrict, map: "bikeinspectionreportfiles_ibfk_1")
+
+  @@index([bike_inspection_report_id], map: "bike_inspection_report_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeInspectionReports {
+  id                            Int                         @id @default(autoincrement())
+  step                          Int                         @default(0)
+  brand                         String                      @default("") @db.VarChar(255)
+  model                         String                      @default("") @db.VarChar(255)
+  year                          Int                         @default(0)
+  distance                      Int                         @default(0)
+  displacement                  Int                         @default(0)
+  doc_use                       Boolean?
+  doc_abolition                 Boolean?
+  doc_maker                     Boolean?
+  doc_trade                     Boolean?
+  doc_id_copy                   Boolean?
+  doc_ok                        Boolean?
+  doc_ok_content                String?                     @db.VarChar(255)
+  inspection_muffler            Int?
+  inspection_etc                Int?
+  inspection_etc_content        String?                     @db.VarChar(255)
+  key_num                       Int?
+  smart_key_num                 Int?
+  exterior_cover                Boolean?
+  exterior_cover_content        String?                     @db.VarChar(255)
+  exterior_wheel                Boolean?
+  exterior_wheel_content        String?                     @db.VarChar(255)
+  exterior_muffler              Boolean?
+  exterior_muffler_content      String?                     @db.VarChar(255)
+  exterior_muffler_tune         Boolean?
+  exterior_muffler_tune_content String?                     @db.VarChar(255)
+  exterior_muffler_has_original Boolean?
+  engine_noise                  Boolean?
+  engine_oil_leak               Int?
+  engine_oil_leak_content       String?                     @db.VarChar(255)
+  mission_shift                 Boolean?
+  mission_neutrality            Int?
+  handle                        Int?
+  handle_content                String?                     @db.VarChar(255)
+  stem_stand                    Boolean?
+  stem_stand_content            String?                     @db.VarChar(255)
+  stem_bearing                  Boolean?
+  stem_bearing_content          String?                     @db.VarChar(255)
+  suspension_front              Boolean?
+  suspension_front_content      String?                     @db.VarChar(255)
+  suspension_back               Boolean?
+  suspension_back_content       String?                     @db.VarChar(255)
+  caliper_front                 Boolean?
+  caliper_front_content         String?                     @db.VarChar(255)
+  caliper_back                  Boolean?
+  caliper_back_content          String?                     @db.VarChar(255)
+  disk_front                    Int?
+  disk_front_content            String?                     @db.VarChar(255)
+  disk_back                     Int?
+  disk_back_content             String?                     @db.VarChar(255)
+  frame                         Boolean?
+  frame_content                 String?                     @db.VarChar(255)
+  frame_swingarm                Int?
+  frame_swingarm_content        String?                     @db.VarChar(255)
+  tire_front                    Int?
+  tire_front_content            String?                     @db.VarChar(255)
+  tire_back                     Int?
+  tire_back_content             String?                     @db.VarChar(255)
+  chain                         Boolean?
+  chain_content                 String?                     @db.VarChar(255)
+  break_pad_front               Int?
+  break_pad_front_content       String?                     @db.VarChar(255)
+  break_pad_back                Int?
+  break_pad_back_content        String?                     @db.VarChar(255)
+  electric_dashboard            Boolean?
+  electric_dashboard_content    String?                     @db.VarChar(255)
+  electric_head_light           Boolean?
+  electric_head_light_content   String?                     @db.VarChar(255)
+  electric_wingcar              Boolean?
+  electric_wingcar_content      String?                     @db.VarChar(255)
+  electric_tail_light           Boolean?
+  electric_tail_light_content   String?                     @db.VarChar(255)
+  electric_battery              Boolean?
+  electric_battery_content      String?                     @db.VarChar(255)
+  electric_battery_recent       Int?
+  registered_date               DateTime?                   @db.DateTime(0)
+  distance_evaluate             Boolean                     @default(true)
+  status                        Int                         @default(0)
+  user_id                       Int?
+  bike_get_upload_id            Int?
+  bike_product_id               Int?
+  createdAt                     DateTime                    @db.DateTime(0)
+  updatedAt                     DateTime                    @db.DateTime(0)
+  BikeInspectionReportFiles     BikeInspectionReportFiles[]
+  Users                         Users?                      @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "bikeinspectionreports_ibfk_8131")
+  BikeGetUploads                BikeGetUploads?             @relation(fields: [bike_get_upload_id], references: [id], onDelete: Restrict, map: "bikeinspectionreports_ibfk_8132")
+  BikeProducts                  BikeProducts?               @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "bikeinspectionreports_ibfk_8133")
+
+  @@index([bike_get_upload_id], map: "bike_get_upload_id")
+  @@index([bike_product_id], map: "bike_product_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeMakerInvoices {
+  id                    Int         @id @default(autoincrement())
+  year                  Int
+  month                 Int
+  due_at                DateTime    @db.DateTime(0)
+  paid_at               DateTime?   @db.DateTime(0)
+  paid_check_admin_name String?     @db.VarChar(255)
+  amount                Int
+  file_name             String      @db.VarChar(255)
+  file_url              String      @db.VarChar(255)
+  memo                  String?     @db.Text
+  bike_maker_id         Int?
+  createdAt             DateTime    @db.DateTime(0)
+  updatedAt             DateTime    @db.DateTime(0)
+  BikeMakers            BikeMakers? @relation(fields: [bike_maker_id], references: [id], onDelete: Restrict, map: "bikemakerinvoices_ibfk_1")
+
+  @@unique([bike_maker_id, year, month], map: "unique_bike_maker_invoice")
+  @@index([paid_at, due_at], map: "idx_bike_maker_invoice_paid_at_due_at")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeMakers {
+  id                Int                 @id @default(autoincrement())
+  name_eng          String              @default("") @db.VarChar(255)
+  name_represent    String              @default("") @db.VarChar(255)
+  name_nickname     Json
+  url               String              @default("") @db.VarChar(255)
+  country           String              @default("") @db.VarChar(255)
+  is_popular        Boolean             @default(false)
+  business_number   String?             @db.VarChar(255)
+  address           String?             @db.VarChar(255)
+  createdAt         DateTime            @db.DateTime(0)
+  updatedAt         DateTime            @db.DateTime(0)
+  BikeMakerInvoices BikeMakerInvoices[]
+  BikeModels        BikeModels[]
+  Partners          Partners[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeModelSpecs {
+  id                    Int             @id @default(autoincrement())
+  year                  Int?            @default(0)
+  length                Int?            @default(0)
+  width                 Int?            @default(0)
+  height                Int?            @default(0)
+  seat_height           Int?            @default(0)
+  curb_weight           Int?            @default(0)
+  gross_weight          Int?            @default(0)
+  break                 String?         @default("") @db.VarChar(255)
+  climbing_angle        Int?            @default(0)
+  motor_type            String?         @default("") @db.VarChar(255)
+  displacement          Int?            @default(0)
+  max_speed             Int?            @default(0)
+  max_rpm               Int?            @default(0)
+  max_power             Float?          @default(0)
+  torque                Int?            @default(0)
+  distance              Int?            @default(0)
+  battery_volume        Float?          @default(0)
+  battery_type          String?         @default("") @db.VarChar(255)
+  battery_standard      String?         @default("") @db.VarChar(255)
+  battery_charging_time Float?          @default(0)
+  colors                Json
+  desc                  String?         @default("") @db.VarChar(255)
+  bike_model_id         Int?
+  createdAt             DateTime        @db.DateTime(0)
+  updatedAt             DateTime        @db.DateTime(0)
+  BikeModels            BikeModels?     @relation(fields: [bike_model_id], references: [id], onDelete: Restrict, map: "bikemodelspecs_ibfk_1")
+  BikeProducts          BikeProducts[]
+  ElectricBikes         ElectricBikes[]
+  RentalBikes           RentalBikes[]
+  Vehicles              Vehicles[]
+
+  @@index([bike_model_id], map: "bike_model_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeModels {
+  id             Int              @id @default(autoincrement())
+  name_eng       String           @default("") @db.VarChar(255)
+  name_represent String           @default("") @db.VarChar(255)
+  name_nickname  Json
+  name_category  String           @default("") @db.VarChar(255)
+  type           Int              @default(0)
+  fuel           Int              @default(1)
+  displacement   Float            @default(0)
+  category_1     String           @default("") @db.VarChar(255)
+  category_2     String           @default("") @db.VarChar(255)
+  bike_maker_id  Int?
+  createdAt      DateTime         @db.DateTime(0)
+  updatedAt      DateTime         @db.DateTime(0)
+  Auctions       Auctions[]
+  BikeGetUploads BikeGetUploads[]
+  BikeGets       BikeGets[]
+  BikeModelSpecs BikeModelSpecs[]
+  BikeMakers     BikeMakers?      @relation(fields: [bike_maker_id], references: [id], onDelete: Restrict, map: "bikemodels_ibfk_1")
+  BikeProducts   BikeProducts[]
+  TradeIns       TradeIns[]
+
+  @@index([bike_maker_id], map: "bike_maker_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeProductFiles {
+  id              Int           @id @default(autoincrement())
+  file_name       String        @default("") @db.VarChar(255)
+  file_url        String        @default("") @db.VarChar(255)
+  type            Int           @default(0)
+  is_represent    Boolean       @default(false)
+  order           Int           @default(0)
+  bike_product_id Int?
+  createdAt       DateTime      @db.DateTime(0)
+  updatedAt       DateTime      @db.DateTime(0)
+  BikeProducts    BikeProducts? @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "bikeproductfiles_ibfk_1")
+
+  @@index([bike_product_id], map: "bike_product_id")
+}
+
+model BikeProductLikes {
+  id              Int           @id @default(autoincrement())
+  bike_product_id Int?
+  user_id         Int?
+  createdAt       DateTime      @db.DateTime(0)
+  updatedAt       DateTime      @db.DateTime(0)
+  BikeProducts    BikeProducts? @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "bikeproductlikes_ibfk_4929")
+  Users           Users?        @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "bikeproductlikes_ibfk_4930")
+
+  @@index([bike_product_id], map: "bike_product_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeProductOptions {
+  id              Int           @id @default(autoincrement())
+  title           String        @default("") @db.VarChar(255)
+  values          Json
+  is_required     Boolean       @default(false)
+  bike_product_id Int?
+  createdAt       DateTime      @db.DateTime(0)
+  updatedAt       DateTime      @db.DateTime(0)
+  BikeProducts    BikeProducts? @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "bikeproductoptions_ibfk_1")
+
+  @@index([bike_product_id], map: "bike_product_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeProductPromotions {
+  id              Int           @id @default(autoincrement())
+  price           Int           @default(0)
+  start_date      DateTime      @db.DateTime(0)
+  end_date        DateTime      @db.DateTime(0)
+  bike_product_id Int?
+  createdAt       DateTime      @db.DateTime(0)
+  updatedAt       DateTime      @db.DateTime(0)
+  BikeProducts    BikeProducts? @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "bikeproductpromotions_ibfk_1")
+
+  @@index([bike_product_id], map: "bike_product_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeProductQnas {
+  id              Int           @id @default(autoincrement())
+  title           String        @db.VarChar(255)
+  content         String        @db.Text
+  answer          String?       @db.Text
+  is_locked       Boolean
+  status          Int           @default(0)
+  bike_product_id Int?
+  user_id         Int?
+  createdAt       DateTime      @db.DateTime(0)
+  updatedAt       DateTime      @db.DateTime(0)
+  BikeProducts    BikeProducts? @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "bikeproductqnas_ibfk_5015")
+  Users           Users?        @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "bikeproductqnas_ibfk_5016")
+
+  @@index([bike_product_id], map: "bike_product_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BikeProducts {
+  id                    Int                     @id @default(autoincrement())
+  title                 String?                 @default("") @db.VarChar(255)
+  year                  Int                     @default(0)
+  mileage               Int                     @default(0)
+  price                 Int                     @default(0)
+  subsidy               Int                     @default(0)
+  area1                 String?                 @default("") @db.VarChar(255)
+  area2                 String?                 @default("") @db.VarChar(255)
+  area3                 String?                 @default("") @db.VarChar(255)
+  delivery_methods      Json
+  is_negotiation        Boolean                 @default(true)
+  documents             Json
+  desc                  String                  @db.Text
+  desc_image_url        String?                 @default("") @db.VarChar(255)
+  history_custom        Json
+  history_checkup       Json
+  seller_name           String                  @default("0") @db.VarChar(255)
+  seller_phone          String                  @default("0") @db.VarChar(255)
+  type                  Int                     @default(0)
+  status                Int                     @default(0)
+  views                 Int                     @default(0)
+  compositions          String                  @db.Text
+  delivery_info         String                  @db.Text
+  review_content        String?                 @db.Text
+  review_star           Int?
+  is_bss                Boolean                 @default(false)
+  bss_plans             Json
+  bike_model_id         Int?
+  bike_model_spec_id    Int?
+  user_id               Int?
+  createdAt             DateTime                @db.DateTime(0)
+  updatedAt             DateTime                @db.DateTime(0)
+  deletedAt             DateTime?               @db.DateTime(0)
+  BikeGetLinks          BikeGetLinks[]
+  BikeInspectionReports BikeInspectionReports[]
+  BikeProductFiles      BikeProductFiles[]
+  BikeProductLikes      BikeProductLikes[]
+  BikeProductOptions    BikeProductOptions[]
+  BikeProductPromotions BikeProductPromotions[]
+  BikeProductQnas       BikeProductQnas[]
+  BikeModels            BikeModels?             @relation(fields: [bike_model_id], references: [id], onDelete: Restrict, map: "bikeproducts_ibfk_8295")
+  BikeModelSpecs        BikeModelSpecs?         @relation(fields: [bike_model_spec_id], references: [id], onDelete: Restrict, map: "bikeproducts_ibfk_8296")
+  Users                 Users?                  @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "bikeproducts_ibfk_8297")
+  ChatRooms             ChatRooms[]
+  Payments              Payments[]
+  Purchases             Purchases[]
+
+  @@index([bike_model_id], map: "bike_model_id")
+  @@index([bike_model_spec_id], map: "bike_model_spec_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BssCompanies {
+  id            Int             @id @default(autoincrement())
+  name          String          @db.VarChar(255)
+  display_name  String          @db.VarChar(255)
+  models        Json
+  createdAt     DateTime        @db.DateTime(0)
+  updatedAt     DateTime        @db.DateTime(0)
+  BssPlans      BssPlans[]
+  BssStations   BssStations[]
+  ElectricBikes ElectricBikes[]
+  RentalBikes   RentalBikes[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BssPlans {
+  id             Int           @id @default(autoincrement())
+  name           String        @db.VarChar(255)
+  price          Int?
+  type           String        @db.VarChar(255)
+  count          Int?
+  volume         Int?
+  distance       Int?
+  bss_company_id Int?
+  createdAt      DateTime      @db.DateTime(0)
+  updatedAt      DateTime      @db.DateTime(0)
+  BssCompanies   BssCompanies? @relation(fields: [bss_company_id], references: [id], onDelete: Restrict, map: "bssplans_ibfk_1")
+  Purchases      Purchases[]
+
+  @@index([bss_company_id], map: "bss_company_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model BssStations {
+  id             Int                  @id @default(autoincrement())
+  name           String               @db.VarChar(255)
+  lat            Float?
+  lng            Float?
+  point          Unsupported("point")
+  address        String?              @db.VarChar(255)
+  address_detail String?              @db.VarChar(255)
+  co_idx         String?              @db.VarChar(255)
+  type           String?              @db.VarChar(255)
+  bss_company_id Int?
+  createdAt      DateTime             @db.DateTime(0)
+  updatedAt      DateTime             @db.DateTime(0)
+  BssCompanies   BssCompanies?        @relation(fields: [bss_company_id], references: [id], onDelete: Restrict, map: "bssstations_ibfk_1")
+
+  @@index([bss_company_id], map: "bss_company_id")
+  @@index([point(length: 32)], map: "bss_stations_point")
+}
+
+model CenterLikes {
+  id        Int      @id @default(autoincrement())
+  center_id Int?
+  user_id   Int?
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  Centers   Centers? @relation(fields: [center_id], references: [id], onDelete: Restrict, map: "centerlikes_ibfk_4905")
+  Users     Users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "centerlikes_ibfk_4906")
+
+  @@index([center_id], map: "center_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Centers {
+  id           Int           @id @default(autoincrement())
+  name         String?       @db.VarChar(255)
+  area1        String?       @default("") @db.VarChar(255)
+  area2        String?       @default("") @db.VarChar(255)
+  area3        String?       @default("") @db.VarChar(255)
+  address      String?       @db.VarChar(255)
+  desc         String?       @db.Text
+  profile_url  String        @default("") @db.VarChar(255)
+  back_img_url String?       @db.VarChar(255)
+  year         String?       @db.VarChar(255)
+  phone        String?       @db.VarChar(255)
+  createdAt    DateTime      @db.DateTime(0)
+  updatedAt    DateTime      @db.DateTime(0)
+  CenterLikes  CenterLikes[]
+  Users        Users[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model ChatRooms {
+  id                                 Int           @id @default(autoincrement())
+  title                              String?       @db.VarChar(255)
+  last_chat                          String?       @db.VarChar(255)
+  last_chat_date                     DateTime?     @db.DateTime(0)
+  sender_view                        Boolean       @default(false)
+  receiver_view                      Boolean       @default(false)
+  type                               Int           @default(0)
+  status                             Int           @default(0)
+  receiver_id                        Int?
+  sender_id                          Int?
+  bike_get_id                        Int?
+  bike_product_id                    Int?
+  createdAt                          DateTime      @db.DateTime(0)
+  updatedAt                          DateTime      @db.DateTime(0)
+  deletedAt                          DateTime?     @db.DateTime(0)
+  Users_ChatRooms_receiver_idToUsers Users?        @relation("ChatRooms_receiver_idToUsers", fields: [receiver_id], references: [id], onDelete: Restrict, map: "chatrooms_ibfk_10733")
+  Users_ChatRooms_sender_idToUsers   Users?        @relation("ChatRooms_sender_idToUsers", fields: [sender_id], references: [id], onDelete: Restrict, map: "chatrooms_ibfk_10734")
+  BikeGets                           BikeGets?     @relation(fields: [bike_get_id], references: [id], onDelete: Restrict, map: "chatrooms_ibfk_10735")
+  BikeProducts                       BikeProducts? @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "chatrooms_ibfk_10736")
+  Chats                              Chats[]
+
+  @@index([bike_get_id], map: "bike_get_id")
+  @@index([bike_product_id], map: "bike_product_id")
+  @@index([receiver_id], map: "receiver_id")
+  @@index([sender_id], map: "sender_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Chats {
+  id             Int              @id @default(autoincrement())
+  message        String           @db.Text
+  type           Int              @default(0)
+  is_read        Boolean          @default(false)
+  extra          Json
+  user_id        Int?
+  chat_room_id   Int?
+  createdAt      DateTime         @db.DateTime(0)
+  updatedAt      DateTime         @db.DateTime(0)
+  deletedAt      DateTime?        @db.DateTime(0)
+  BikeGetLinks   BikeGetLinks[]
+  BikeGetUploads BikeGetUploads[]
+  Users          Users?           @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "chats_ibfk_2437")
+  ChatRooms      ChatRooms?       @relation(fields: [chat_room_id], references: [id], onDelete: Restrict, map: "chats_ibfk_2438")
+
+  @@index([chat_room_id], map: "chat_room_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model ElectricBikeFiles {
+  id               Int            @id @default(autoincrement())
+  file_name        String         @default("") @db.VarChar(255)
+  file_url         String         @default("") @db.VarChar(255)
+  is_represent     Boolean        @default(false)
+  order            Int            @default(0)
+  electric_bike_id Int?
+  createdAt        DateTime       @db.DateTime(0)
+  updatedAt        DateTime       @db.DateTime(0)
+  ElectricBikes    ElectricBikes? @relation(fields: [electric_bike_id], references: [id], onDelete: Restrict, map: "electricbikefiles_ibfk_1")
+
+  @@index([electric_bike_id], map: "electric_bike_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model ElectricBikeOptions {
+  id               Int            @id @default(autoincrement())
+  title            String         @default("") @db.VarChar(255)
+  values           Json
+  is_required      Boolean        @default(false)
+  order            Int            @default(0)
+  type             Int            @default(0)
+  electric_bike_id Int?
+  createdAt        DateTime       @db.DateTime(0)
+  updatedAt        DateTime       @db.DateTime(0)
+  ElectricBikes    ElectricBikes? @relation(fields: [electric_bike_id], references: [id], onDelete: Restrict, map: "electricbikeoptions_ibfk_1")
+
+  @@index([electric_bike_id], map: "electric_bike_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model ElectricBikePricePromotions {
+  id                     Int                 @id @default(autoincrement())
+  price                  Int                 @default(0)
+  start_date             DateTime            @db.DateTime(0)
+  end_date               DateTime            @db.DateTime(0)
+  electric_bike_price_id Int?
+  createdAt              DateTime            @db.DateTime(0)
+  updatedAt              DateTime            @db.DateTime(0)
+  ElectricBikePrices     ElectricBikePrices? @relation(fields: [electric_bike_price_id], references: [id], onDelete: Restrict, map: "electricbikepricepromotions_ibfk_1")
+
+  @@index([electric_bike_price_id], map: "electric_bike_price_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model ElectricBikePrices {
+  id                          Int                           @id @default(autoincrement())
+  price                       Int                           @default(0)
+  subsidy                     Int                           @default(0)
+  subsidy_national            Int                           @default(0)
+  subsidy_local               Int                           @default(0)
+  compositions                Json
+  type                        Int                           @default(0)
+  electric_bike_id            Int?
+  createdAt                   DateTime                      @db.DateTime(0)
+  updatedAt                   DateTime                      @db.DateTime(0)
+  ElectricBikePricePromotions ElectricBikePricePromotions[]
+  ElectricBikes               ElectricBikes?                @relation(fields: [electric_bike_id], references: [id], onDelete: Restrict, map: "electricbikeprices_ibfk_1")
+
+  @@index([electric_bike_id], map: "electric_bike_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model ElectricBikeQnas {
+  id               Int            @id @default(autoincrement())
+  title            String         @db.VarChar(255)
+  content          String         @db.Text
+  answer           String?        @db.Text
+  is_locked        Boolean
+  status           Int            @default(0)
+  electric_bike_id Int?
+  user_id          Int?
+  createdAt        DateTime       @db.DateTime(0)
+  updatedAt        DateTime       @db.DateTime(0)
+  ElectricBikes    ElectricBikes? @relation(fields: [electric_bike_id], references: [id], onDelete: Restrict, map: "electricbikeqnas_ibfk_5005")
+  Users            Users?         @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "electricbikeqnas_ibfk_5006")
+
+  @@index([electric_bike_id], map: "electric_bike_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model ElectricBikeSpecialSubsidies {
+  id                         Int            @id @default(autoincrement())
+  subsidy_type               Int?
+  subsidy_unit               Int?
+  subsidy_amount             Int?
+  subsidy_name               String?        @db.VarChar(255)
+  condition_apply_type       Json?
+  condition_apply_additional Json?
+  condition_use_area         String?        @default("0") @db.VarChar(255)
+  condition_type             Json?
+  electric_bike_id           Int?
+  createdAt                  DateTime       @db.DateTime(0)
+  updatedAt                  DateTime       @db.DateTime(0)
+  ElectricBikes              ElectricBikes? @relation(fields: [electric_bike_id], references: [id], onDelete: Restrict, map: "electricbikespecialsubsidies_ibfk_1")
+
+  @@index([electric_bike_id], map: "electric_bike_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model ElectricBikes {
+  id                           Int                            @id @default(autoincrement())
+  title                        String?                        @default("") @db.VarChar(255)
+  desc_image_url               String?                        @default("") @db.VarChar(255)
+  desc                         Json
+  status                       Int                            @default(0)
+  views                        Int                            @default(0)
+  delivery_info                String                         @db.Text
+  review_content               String?                        @db.Text
+  review_star                  Int?
+  bss_available                Boolean                        @default(false)
+  battery_detachable           Boolean                        @default(true)
+  is_special_sale              Boolean                        @default(false)
+  special_sale_txt             String?                        @db.VarChar(255)
+  experiences                  Json?
+  product_order                Int?
+  bike_size                    Int                            @default(1)
+  bike_model_spec_id           Int?
+  bss_company_id               Int?
+  createdAt                    DateTime                       @db.DateTime(0)
+  updatedAt                    DateTime                       @db.DateTime(0)
+  deletedAt                    DateTime?                      @db.DateTime(0)
+  ElectricBikeFiles            ElectricBikeFiles[]
+  ElectricBikeOptions          ElectricBikeOptions[]
+  ElectricBikePrices           ElectricBikePrices[]
+  ElectricBikeQnas             ElectricBikeQnas[]
+  ElectricBikeSpecialSubsidies ElectricBikeSpecialSubsidies[]
+  BikeModelSpecs               BikeModelSpecs?                @relation(fields: [bike_model_spec_id], references: [id], onDelete: Restrict, map: "electricbikes_ibfk_2623")
+  BssCompanies                 BssCompanies?                  @relation(fields: [bss_company_id], references: [id], onDelete: Restrict, map: "electricbikes_ibfk_2624")
+  PurchaseReserveds            PurchaseReserveds[]
+  Purchases                    Purchases[]
+
+  @@index([bike_model_spec_id], map: "bike_model_spec_id")
+  @@index([bss_company_id], map: "bss_company_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model FaqCategories {
+  id          Int           @id @default(autoincrement())
+  name        String        @default("") @db.VarChar(255)
+  createdAt   DateTime      @db.DateTime(0)
+  updatedAt   DateTime      @db.DateTime(0)
+  deletedAt   DateTime?     @db.DateTime(0)
+  FaqContents FaqContents[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model FaqContents {
+  id              Int            @id @default(autoincrement())
+  title           String         @default("") @db.VarChar(255)
+  content         String         @default("") @db.VarChar(255)
+  is_frequent     Boolean        @default(false)
+  faq_category_id Int?
+  createdAt       DateTime       @db.DateTime(0)
+  updatedAt       DateTime       @db.DateTime(0)
+  deletedAt       DateTime?      @db.DateTime(0)
+  FaqCategories   FaqCategories? @relation(fields: [faq_category_id], references: [id], onDelete: Restrict, map: "faqcontents_ibfk_1")
+
+  @@index([faq_category_id], map: "faq_category_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model InventoryItemCategories {
+  id                            Int                       @id @default(autoincrement())
+  parent_id                     Int?
+  name                          String                    @db.VarChar(255)
+  color                         String                    @db.VarChar(7)
+  createdAt                     DateTime                  @db.DateTime(0)
+  updatedAt                     DateTime                  @db.DateTime(0)
+  order                         Int                       @default(0)
+  InventoryItemCategories       InventoryItemCategories?  @relation("InventoryItemCategoriesToInventoryItemCategories", fields: [parent_id], references: [id], map: "inventoryitemcategories_ibfk_1")
+  other_InventoryItemCategories InventoryItemCategories[] @relation("InventoryItemCategoriesToInventoryItemCategories")
+  InventoryItems                InventoryItems[]
+
+  @@index([parent_id], map: "parent_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model InventoryItems {
+  id                      Int                      @id @default(autoincrement())
+  type                    Int
+  name                    String                   @db.VarChar(255)
+  unit                    String                   @db.VarChar(255)
+  description             String?                  @db.Text
+  memo                    String?                  @db.Text
+  is_active               Boolean                  @default(true)
+  createdAt               DateTime                 @db.DateTime(0)
+  updatedAt               DateTime                 @db.DateTime(0)
+  category_id             Int?
+  InventoryItemCategories InventoryItemCategories? @relation(fields: [category_id], references: [id], map: "inventoryitems_ibfk_1")
+  InventoryLogs           InventoryLogs[]
+  InventoryStocks         InventoryStocks[]
+
+  @@index([category_id], map: "category_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model InventoryLogs {
+  id                                                  Int             @id @default(autoincrement())
+  createdAt                                           DateTime        @db.DateTime(0)
+  updatedAt                                           DateTime        @db.DateTime(0)
+  type                                                Int
+  quantity                                            Int
+  from_location_id                                    Int?
+  to_location_id                                      Int?
+  reason                                              String?         @db.VarChar(255)
+  memo                                                String?         @db.Text
+  unit_price_consumer                                 Int?
+  unit_price_actual                                   Int?
+  whole_price_delivery                                Int?
+  whole_price_etc                                     Int?
+  user_id                                             Int?
+  inventory_item_id                                   Int?
+  Locations_InventoryLogs_from_location_idToLocations Locations?      @relation("InventoryLogs_from_location_idToLocations", fields: [from_location_id], references: [id], onDelete: Restrict, map: "inventorylogs_ibfk_3321")
+  Locations_InventoryLogs_to_location_idToLocations   Locations?      @relation("InventoryLogs_to_location_idToLocations", fields: [to_location_id], references: [id], onDelete: Restrict, map: "inventorylogs_ibfk_3322")
+  Users                                               Users?          @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "inventorylogs_ibfk_3323")
+  InventoryItems                                      InventoryItems? @relation(fields: [inventory_item_id], references: [id], onDelete: Restrict, map: "inventorylogs_ibfk_3324")
+
+  @@index([from_location_id], map: "from_location_id")
+  @@index([inventory_item_id], map: "inventory_item_id")
+  @@index([to_location_id], map: "to_location_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model InventoryStocks {
+  id                Int             @id @default(autoincrement())
+  location_id       Int?
+  inventory_item_id Int?
+  createdAt         DateTime        @db.DateTime(0)
+  updatedAt         DateTime        @db.DateTime(0)
+  quantity          Int             @default(0)
+  memo              String?         @db.Text
+  Locations         Locations?      @relation(fields: [location_id], references: [id], onDelete: Restrict, map: "inventorystocks_ibfk_2401")
+  InventoryItems    InventoryItems? @relation(fields: [inventory_item_id], references: [id], onDelete: Restrict, map: "inventorystocks_ibfk_2402")
+
+  @@unique([location_id, inventory_item_id], map: "inventory_stocks_location_id_inventory_item_id")
+  @@index([location_id, inventory_item_id], map: "idx_inventory_stock_location_id_inventory_item_id")
+  @@index([updatedAt], map: "idx_updated_at")
+  @@index([inventory_item_id], map: "inventory_item_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Locations {
+  id                                                      Int               @id @default(autoincrement())
+  type                                                    String            @db.VarChar(255)
+  name                                                    String            @unique(map: "locations_name") @db.VarChar(255)
+  lat                                                     Float?
+  lng                                                     Float?
+  address                                                 String            @db.VarChar(255)
+  address_detail                                          String?           @db.VarChar(255)
+  zip_code                                                String            @db.VarChar(255)
+  createdAt                                               DateTime          @db.DateTime(0)
+  updatedAt                                               DateTime          @db.DateTime(0)
+  InventoryLogs_InventoryLogs_from_location_idToLocations InventoryLogs[]   @relation("InventoryLogs_from_location_idToLocations")
+  InventoryLogs_InventoryLogs_to_location_idToLocations   InventoryLogs[]   @relation("InventoryLogs_to_location_idToLocations")
+  InventoryStocks                                         InventoryStocks[]
+  Vehicles                                                Vehicles[]
+}
+
+model MainReviews {
+  id          Int      @id @default(autoincrement())
+  target_id   Int
+  target_type String   @db.VarChar(255)
+  priority    Int      @default(0)
+  createdAt   DateTime @db.DateTime(0)
+  updatedAt   DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model MessageAttachments {
+  id         Int       @id @default(autoincrement())
+  file_url   String    @db.VarChar(255)
+  file_name  String    @db.VarChar(255)
+  file_size  Int
+  mime_type  String    @db.VarChar(255)
+  message_id Int?
+  createdAt  DateTime  @db.DateTime(0)
+  updatedAt  DateTime  @db.DateTime(0)
+  Messages   Messages? @relation(fields: [message_id], references: [id], onDelete: Restrict, map: "messageattachments_ibfk_1")
+
+  @@index([message_id], map: "message_id")
+}
+
+model MessageJoinAfterServices {
+  id               Int            @id @default(autoincrement())
+  after_service_id Int?           @unique(map: "unique_after_service")
+  message_room_id  Int?           @unique(map: "unique_message_room")
+  createdAt        DateTime       @db.DateTime(0)
+  updatedAt        DateTime       @db.DateTime(0)
+  AfterServices    AfterServices? @relation(fields: [after_service_id], references: [id], onDelete: Restrict, map: "messagejoinafterservices_ibfk_4879")
+  MessageRooms     MessageRooms?  @relation(fields: [message_room_id], references: [id], onDelete: Restrict, map: "messagejoinafterservices_ibfk_4880")
+}
+
+model MessageReadStatuses {
+  id          Int       @id @default(autoincrement())
+  target_id   Int
+  target_role String    @db.VarChar(255)
+  message_id  Int?
+  createdAt   DateTime  @db.DateTime(0)
+  updatedAt   DateTime  @db.DateTime(0)
+  Messages    Messages? @relation(fields: [message_id], references: [id], onDelete: Restrict, map: "messagereadstatuses_ibfk_1")
+
+  @@index([createdAt], map: "idx_read_status_createdAt")
+  @@index([message_id], map: "idx_read_status_message_id")
+  @@index([target_role, target_id], map: "idx_read_status_target")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model MessageRoomLastestMessages {
+  message_room_id   Int       @id
+  last_message      String?   @db.VarChar(255)
+  last_message_date DateTime? @db.DateTime(0)
+  target_id         Int
+  target_role       String    @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model MessageRoomParticipants {
+  id                   Int           @id @default(autoincrement())
+  left_at              DateTime?     @db.DateTime(0)
+  last_read_message_id Int?
+  target_id            Int
+  target_role          String        @db.VarChar(255)
+  message_room_id      Int?
+  createdAt            DateTime      @db.DateTime(0)
+  updatedAt            DateTime      @db.DateTime(0)
+  MessageRooms         MessageRooms? @relation(fields: [message_room_id], references: [id], onDelete: Restrict, map: "messageroomparticipants_ibfk_1")
+
+  @@index([message_room_id], map: "idx_participant_message_room_id")
+  @@index([target_role, target_id], map: "idx_participant_message_room_target")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model MessageRooms {
+  id                       Int                       @id @default(autoincrement())
+  title                    String?                   @db.VarChar(255)
+  status                   Int                       @default(0)
+  target_id                Int
+  target_role              String                    @db.VarChar(255)
+  createdAt                DateTime                  @db.DateTime(0)
+  updatedAt                DateTime                  @db.DateTime(0)
+  deletedAt                DateTime?                 @db.DateTime(0)
+  MessageJoinAfterServices MessageJoinAfterServices?
+  MessageRoomParticipants  MessageRoomParticipants[]
+  Messages                 Messages[]
+
+  @@index([createdAt], map: "idx_message_room_createdAt")
+  @@index([target_role, target_id], map: "idx_message_room_target")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Messages {
+  id                  Int                   @id @default(autoincrement())
+  message             String                @db.Text
+  type                Int                   @default(0)
+  extra               Json
+  is_deleted          Boolean               @default(false)
+  target_id           Int
+  target_role         String                @db.VarChar(255)
+  message_room_id     Int?
+  createdAt           DateTime              @db.DateTime(0)
+  updatedAt           DateTime              @db.DateTime(0)
+  MessageAttachments  MessageAttachments[]
+  MessageReadStatuses MessageReadStatuses[]
+  MessageRooms        MessageRooms?         @relation(fields: [message_room_id], references: [id], onDelete: Restrict, map: "messages_ibfk_1")
+
+  @@index([createdAt], map: "idx_message_createdAt")
+  @@index([message_room_id], map: "idx_message_message_room_id")
+  @@index([target_role, target_id], map: "idx_message_target")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model MileageHistories {
+  id                        Int                         @id @default(autoincrement())
+  amount                    Int                         @default(0)
+  used                      Int                         @default(0)
+  status                    Int                         @default(1)
+  description               String                      @default("") @db.VarChar(255)
+  source_type               Int
+  source_id                 Int?
+  expires_at                DateTime?                   @db.DateTime(0)
+  user_id                   Int?
+  createdAt                 DateTime                    @db.DateTime(0)
+  updatedAt                 DateTime                    @db.DateTime(0)
+  Users                     Users?                      @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "mileagehistories_ibfk_1")
+  MileageUsedHistoryDetails MileageUsedHistoryDetails[]
+
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model MileageRentalStatuses {
+  id            Int      @id @default(autoincrement())
+  total_mileage Int      @default(0)
+  used_mileage  Int      @default(0)
+  rental_id     Int?     @unique(map: "mileage_rental_statuses_rental_id")
+  createdAt     DateTime @db.DateTime(0)
+  updatedAt     DateTime @db.DateTime(0)
+  Rentals       Rentals? @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "mileagerentalstatuses_ibfk_1")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model MileageStatuses {
+  id            Int      @id @default(autoincrement())
+  total_mileage Int      @default(0)
+  used_mileage  Int      @default(0)
+  user_id       Int?     @unique(map: "mileage_statuses_user_id")
+  createdAt     DateTime @db.DateTime(0)
+  updatedAt     DateTime @db.DateTime(0)
+  Users         Users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "mileagestatuses_ibfk_1")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model MileageUsedHistories {
+  id                        Int                         @id @default(autoincrement())
+  amount                    Int                         @default(0)
+  description               String                      @default("") @db.VarChar(255)
+  source_type               Int
+  source_id                 Int?
+  user_id                   Int?
+  createdAt                 DateTime                    @db.DateTime(0)
+  updatedAt                 DateTime                    @db.DateTime(0)
+  Users                     Users?                      @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "mileageusedhistories_ibfk_1")
+  MileageUsedHistoryDetails MileageUsedHistoryDetails[]
+
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model MileageUsedHistoryDetails {
+  id                      Int                   @id @default(autoincrement())
+  amount                  Int                   @default(0)
+  mileage_history_id      Int?
+  mileage_used_history_id Int?
+  createdAt               DateTime              @db.DateTime(0)
+  updatedAt               DateTime              @db.DateTime(0)
+  MileageHistories        MileageHistories?     @relation(fields: [mileage_history_id], references: [id], onDelete: Restrict, map: "mileageusedhistorydetails_ibfk_5303")
+  MileageUsedHistories    MileageUsedHistories? @relation(fields: [mileage_used_history_id], references: [id], onDelete: Restrict, map: "mileageusedhistorydetails_ibfk_5304")
+
+  @@index([mileage_history_id], map: "mileage_history_id")
+  @@index([mileage_used_history_id], map: "mileage_used_history_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Partners {
+  id            Int         @id @default(autoincrement())
+  username      String?     @db.VarChar(255)
+  email         Json
+  as_email      Json
+  password      String      @default("") @db.VarChar(255)
+  name          String      @default("") @db.VarChar(255)
+  phone         String?     @default("") @db.VarChar(255)
+  salt_key      String      @default("") @db.VarChar(255)
+  status        Int         @default(0)
+  bike_maker_id Int?
+  createdAt     DateTime    @db.DateTime(0)
+  updatedAt     DateTime    @db.DateTime(0)
+  deletedAt     DateTime?   @db.DateTime(0)
+  BikeMakers    BikeMakers? @relation(fields: [bike_maker_id], references: [id], onDelete: Restrict, map: "partners_ibfk_1")
+
+  @@index([bike_maker_id], map: "bike_maker_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PaymentKCPRefunds {
+  id                    Int          @id @default(autoincrement())
+  refund_amount         Int
+  refund_reason         String?      @db.VarChar(256)
+  refund_type           String       @db.VarChar(10)
+  refund_account_bank   String?      @db.VarChar(10)
+  refund_account_number String?      @db.VarChar(200)
+  refund_account_holder String?      @db.VarChar(100)
+  refund_time           DateTime     @db.DateTime(0)
+  payment_kcp_id        Int?
+  createdAt             DateTime     @db.DateTime(0)
+  updatedAt             DateTime     @db.DateTime(0)
+  PaymentKCPs           PaymentKCPs? @relation(fields: [payment_kcp_id], references: [id], onDelete: Restrict, map: "paymentkcprefunds_ibfk_1")
+
+  @@index([payment_kcp_id], map: "payment_kcp_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PaymentKCPs {
+  id                   Int                    @id @default(autoincrement())
+  ordr_idxx            String                 @default("") @db.VarChar(255)
+  good_mny             Int                    @default(0)
+  good_name            String                 @default("") @db.VarChar(255)
+  pay_method           String                 @default("") @db.VarChar(255)
+  type                 Int                    @default(0)
+  buyr_name            String                 @default("") @db.VarChar(255)
+  buyr_tel2            String                 @default("") @db.VarChar(255)
+  buyr_mail            String                 @default("") @db.VarChar(255)
+  pram_opt_1           String                 @default("") @db.VarChar(255)
+  pram_opt_2           String                 @default("") @db.VarChar(255)
+  pram_opt_3           String                 @default("") @db.VarChar(255)
+  tno                  String?                @db.VarChar(255)
+  amount               Int?
+  card_cd              String?                @db.VarChar(255)
+  card_name            String?                @db.VarChar(255)
+  card_no              String?                @db.VarChar(255)
+  app_no               String?                @db.VarChar(255)
+  app_time             String?                @db.VarChar(255)
+  noinf                String?                @db.VarChar(255)
+  noinf_type           String?                @db.VarChar(255)
+  quota                Int?
+  card_mny             Int?
+  coupon_mny           Int?
+  partcanc_yn          String?                @db.VarChar(255)
+  card_bin_type_01     Int?
+  card_bin_type_02     Int?
+  payco_point_mny      Int?
+  pay_method_res       String?                @db.VarChar(255)
+  bankname             String?                @db.VarChar(255)
+  bankcode             String?                @db.VarChar(255)
+  account              String?                @db.VarChar(255)
+  va_date              String?                @db.VarChar(255)
+  va_name              String?                @db.VarChar(255)
+  tx_cd                String?                @db.VarChar(255)
+  tx_tm                String?                @db.VarChar(255)
+  ipgm_name            String?                @db.VarChar(255)
+  ipgm_mnyx            Int?
+  totl_mnyx            Int?
+  ipgm_time            String?                @db.VarChar(255)
+  bank_code            String?                @db.VarChar(255)
+  account_wh           String?                @db.VarChar(255)
+  noti_id              String?                @db.VarChar(255)
+  op_cd                String?                @db.VarChar(255)
+  remitter             String?                @db.VarChar(255)
+  cash_a_no            String?                @db.VarChar(255)
+  cash_no              String?                @db.VarChar(255)
+  status               Int                    @default(0)
+  refunded_amount      Int?
+  remaining_amount     Int?
+  last_cancel_time     DateTime?              @db.DateTime(0)
+  purchase_id          Int?
+  rental_id            Int?
+  user_id              Int?
+  createdAt            DateTime               @db.DateTime(0)
+  updatedAt            DateTime               @db.DateTime(0)
+  PaymentKCPRefunds    PaymentKCPRefunds[]
+  Purchases            Purchases?             @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "paymentkcps_ibfk_7824")
+  Rentals              Rentals?               @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "paymentkcps_ibfk_7825")
+  Users                Users?                 @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "paymentkcps_ibfk_7826")
+  PaymentLinks         PaymentLinks[]
+  RentalPaymentFines   RentalPaymentFines[]
+  RentalPaymentManuals RentalPaymentManuals[]
+  RentalPaymentTables  RentalPaymentTables[]
+
+  @@index([purchase_id], map: "purchase_id")
+  @@index([rental_id], map: "rental_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PaymentLinks {
+  id             Int          @id @default(autoincrement())
+  key            String?      @db.VarChar(255)
+  link           String?      @db.VarChar(255)
+  good_mny       Int          @default(0)
+  good_name      String       @default("") @db.VarChar(255)
+  status         Int          @default(0)
+  payment_kcp_id Int?
+  createdAt      DateTime     @db.DateTime(0)
+  updatedAt      DateTime     @db.DateTime(0)
+  PaymentKCPs    PaymentKCPs? @relation(fields: [payment_kcp_id], references: [id], onDelete: Restrict, map: "paymentlinks_ibfk_1")
+
+  @@index([payment_kcp_id], map: "payment_kcp_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Payments {
+  id                    Int           @id @default(autoincrement())
+  price                 Int           @default(0)
+  version               String?       @default("") @db.VarChar(255)
+  payment_key           String?       @db.VarChar(255)
+  type                  String?       @db.VarChar(255)
+  order_id              String        @default("") @db.VarChar(255)
+  order_name            String?       @default("") @db.VarChar(255)
+  m_id                  String?       @db.VarChar(255)
+  currency              String?       @db.VarChar(255)
+  method                String?       @db.VarChar(255)
+  total_amount          Int?
+  balance_amount        String?       @db.VarChar(255)
+  status                String?       @default("READY") @db.VarChar(255)
+  requested_at          DateTime?     @db.DateTime(0)
+  approved_at           DateTime?     @db.DateTime(0)
+  use_escrow            Boolean?
+  last_transaction_key  String?       @db.VarChar(255)
+  supplied_amount       Int?
+  vat                   Int?
+  culture_expense       Boolean?
+  tax_free_amount       Int?
+  tax_exemption_amount  Int?
+  cancels               Json?
+  is_partial_cancelable Boolean?
+  card                  Json?
+  virtual_account       Json?
+  secret                String?       @db.VarChar(255)
+  receipt               Json?
+  checkout              Json?
+  easy_pay              Json?
+  country               String?       @db.VarChar(255)
+  failure               Json?
+  cash_receipt          Json?
+  cash_receipts         Json?
+  discount              Json?
+  bike_get_id           Int?
+  bike_product_id       Int?
+  purchase_id           Int?
+  user_id               Int?
+  createdAt             DateTime      @db.DateTime(0)
+  updatedAt             DateTime      @db.DateTime(0)
+  BikeGets              BikeGets?     @relation(fields: [bike_get_id], references: [id], onDelete: Restrict, map: "payments_ibfk_10569")
+  BikeProducts          BikeProducts? @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "payments_ibfk_10570")
+  Purchases             Purchases?    @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "payments_ibfk_10571")
+  Users                 Users?        @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "payments_ibfk_10572")
+
+  @@index([bike_get_id], map: "bike_get_id")
+  @@index([bike_product_id], map: "bike_product_id")
+  @@index([purchase_id], map: "purchase_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PostFiles {
+  id        Int       @id @default(autoincrement())
+  file_name String    @default("0") @db.VarChar(255)
+  file_url  String    @default("0") @db.VarChar(255)
+  post_id   Int?
+  createdAt DateTime  @db.DateTime(0)
+  updatedAt DateTime  @db.DateTime(0)
+  deletedAt DateTime? @db.DateTime(0)
+  Posts     Posts?    @relation(fields: [post_id], references: [id], onDelete: Restrict, map: "postfiles_ibfk_1")
+
+  @@index([post_id], map: "post_id")
+}
+
+model PostLikes {
+  id        Int      @id @default(autoincrement())
+  user_id   Int?
+  post_id   Int?
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  Users     Users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "postlikes_ibfk_4905")
+  Posts     Posts?   @relation(fields: [post_id], references: [id], onDelete: Restrict, map: "postlikes_ibfk_4906")
+
+  @@index([post_id], map: "post_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PostReplies {
+  id                Int              @id @default(autoincrement())
+  content           String           @db.Text
+  user_id           Int?
+  post_id           Int?
+  createdAt         DateTime         @db.DateTime(0)
+  updatedAt         DateTime         @db.DateTime(0)
+  deletedAt         DateTime?        @db.DateTime(0)
+  parent_reply_id   Int?
+  Users             Users?           @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "postreplies_ibfk_7369")
+  Posts             Posts?           @relation(fields: [post_id], references: [id], onDelete: Restrict, map: "postreplies_ibfk_7370")
+  PostReplies       PostReplies?     @relation("PostRepliesToPostReplies", fields: [parent_reply_id], references: [id], onDelete: Restrict, map: "postreplies_ibfk_7371")
+  other_PostReplies PostReplies[]    @relation("PostRepliesToPostReplies")
+  PostReplyFiles    PostReplyFiles[]
+
+  @@index([parent_reply_id], map: "parent_reply_id")
+  @@index([post_id], map: "post_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PostReplyFiles {
+  id            Int          @id @default(autoincrement())
+  file_name     String       @default("0") @db.VarChar(255)
+  file_url      String       @default("0") @db.VarChar(255)
+  post_reply_id Int?
+  createdAt     DateTime     @db.DateTime(0)
+  updatedAt     DateTime     @db.DateTime(0)
+  deletedAt     DateTime?    @db.DateTime(0)
+  PostReplies   PostReplies? @relation(fields: [post_reply_id], references: [id], onDelete: Restrict, map: "postreplyfiles_ibfk_1")
+
+  @@index([post_reply_id], map: "post_reply_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Posts {
+  id          Int           @id @default(autoincrement())
+  title       String        @default("0") @db.VarChar(255)
+  content     String        @default("0") @db.VarChar(255)
+  type        Json
+  view_count  Int           @default(0)
+  user_id     Int?
+  createdAt   DateTime      @db.DateTime(0)
+  updatedAt   DateTime      @db.DateTime(0)
+  deletedAt   DateTime?     @db.DateTime(0)
+  PostFiles   PostFiles[]
+  PostLikes   PostLikes[]
+  PostReplies PostReplies[]
+  Users       Users?        @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "posts_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PurchaseFiles {
+  id          Int        @id @default(autoincrement())
+  file_name   String     @default("") @db.VarChar(255)
+  file_url    String     @default("") @db.VarChar(255)
+  file_type   Int        @default(0)
+  is_secure   Boolean    @default(false)
+  purchase_id Int?
+  createdAt   DateTime   @db.DateTime(0)
+  updatedAt   DateTime   @db.DateTime(0)
+  Purchases   Purchases? @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "purchasefiles_ibfk_1")
+
+  @@index([purchase_id], map: "purchase_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PurchaseMemos {
+  id          Int        @id @default(autoincrement())
+  content     String     @db.Text
+  write       String     @default("") @db.VarChar(255)
+  type        Int        @default(0)
+  purchase_id Int?
+  createdAt   DateTime   @db.DateTime(0)
+  updatedAt   DateTime   @db.DateTime(0)
+  Purchases   Purchases? @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "purchasememos_ibfk_1")
+
+  @@index([purchase_id], map: "purchase_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PurchaseMessages {
+  id             Int                           @id @default(autoincrement())
+  type           PurchaseMessages_type         @default(LMS)
+  content_type   PurchaseMessages_content_type @default(COMM)
+  to_phone       String                        @db.VarChar(20)
+  from_phone     String?                       @db.VarChar(20)
+  subject        String?                       @db.VarChar(200)
+  content        String                        @db.Text
+  byte_length    Int                           @default(0)
+  status         PurchaseMessages_status       @default(REQUESTED)
+  request_id     String?                       @db.VarChar(100)
+  result_code    String?                       @db.VarChar(32)
+  result_message String?                       @db.VarChar(255)
+  sent_at        DateTime?                     @db.DateTime(0)
+  purchase_id    Int?
+  createdAt      DateTime                      @db.DateTime(0)
+  updatedAt      DateTime                      @db.DateTime(0)
+  Purchases      Purchases?                    @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "purchasemessages_ibfk_1")
+
+  @@index([purchase_id], map: "purchase_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PurchaseOptions {
+  id             Int        @id @default(autoincrement())
+  qty            Int        @default(0)
+  price          Int        @default(0)
+  subsidy        Int        @default(0)
+  subsidy_future Int        @default(0)
+  promotion      Int        @default(0)
+  option_price   Int        @default(0)
+  total_price    Int        @default(0)
+  options        Json
+  purchase_id    Int?
+  createdAt      DateTime   @db.DateTime(0)
+  updatedAt      DateTime   @db.DateTime(0)
+  Purchases      Purchases? @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "purchaseoptions_ibfk_1")
+
+  @@index([purchase_id], map: "purchase_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PurchaseRentalSlots {
+  id          Int        @id @default(autoincrement())
+  slot_no     Int
+  status      Int        @default(0)
+  purchase_id Int?
+  createdAt   DateTime   @db.DateTime(0)
+  updatedAt   DateTime   @db.DateTime(0)
+  Purchases   Purchases? @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "purchaserentalslots_ibfk_1")
+  Rentals     Rentals[]
+
+  @@index([purchase_id], map: "purchase_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PurchaseReserveds {
+  id               Int            @id @default(autoincrement())
+  name             String         @db.VarChar(255)
+  phone            String         @db.VarChar(255)
+  options          Json?
+  price            Int?           @default(0)
+  subsidy          Int?           @default(0)
+  promotion        Int?           @default(0)
+  total_price      Int?           @default(0)
+  price_paid       Int?           @default(0)
+  is_bss           Boolean?       @default(false)
+  model            String         @db.VarChar(255)
+  maker            String         @db.VarChar(255)
+  creator          String?        @db.VarChar(255)
+  is_created       Boolean?       @default(false)
+  electric_bike_id Int?
+  purchase_id      Int?
+  createdAt        DateTime       @db.DateTime(0)
+  updatedAt        DateTime       @db.DateTime(0)
+  ElectricBikes    ElectricBikes? @relation(fields: [electric_bike_id], references: [id], onDelete: Restrict, map: "purchasereserveds_ibfk_4895")
+  Purchases        Purchases?     @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "purchasereserveds_ibfk_4896")
+
+  @@index([electric_bike_id], map: "electric_bike_id")
+  @@index([purchase_id], map: "purchase_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PurchaseReviewFiles {
+  id                 Int              @id @default(autoincrement())
+  file_name          String           @default("") @db.VarChar(255)
+  file_url           String           @default("") @db.VarChar(255)
+  file_type          String           @default("") @db.VarChar(255)
+  purchase_review_id Int?
+  createdAt          DateTime         @db.DateTime(0)
+  updatedAt          DateTime         @db.DateTime(0)
+  PurchaseReviews    PurchaseReviews? @relation(fields: [purchase_review_id], references: [id], onDelete: Restrict, map: "purchasereviewfiles_ibfk_1")
+
+  @@index([purchase_review_id], map: "purchase_review_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model PurchaseReviews {
+  id                  Int                   @id @default(autoincrement())
+  stars               Float                 @default(5)
+  content             String                @db.Text
+  badream_stars       Float                 @default(5)
+  badream_reuse_stars Float                 @default(5)
+  badream_content     String                @db.Text
+  purchase_id         Int?
+  createdAt           DateTime              @db.DateTime(0)
+  updatedAt           DateTime              @db.DateTime(0)
+  PurchaseReviewFiles PurchaseReviewFiles[]
+  Purchases           Purchases?            @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "purchasereviews_ibfk_1")
+
+  @@index([purchase_id], map: "purchase_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Purchases {
+  id                         Int                   @id @default(autoincrement())
+  name                       String?               @db.VarChar(255)
+  birth_date                 String?               @db.VarChar(255)
+  phone                      String?               @db.VarChar(255)
+  email                      String?               @db.VarChar(255)
+  address                    String?               @db.VarChar(255)
+  address_detail             String?               @db.VarChar(255)
+  zip_code                   String?               @db.VarChar(255)
+  address_deliver            String?               @db.VarChar(255)
+  address_detail_deliver     String?               @db.VarChar(255)
+  zip_code_deliver           String?               @db.VarChar(255)
+  use_area                   String?               @db.VarChar(255)
+  status                     Int                   @default(0)
+  is_bss                     Boolean?              @default(false)
+  price                      Int                   @default(0)
+  subsidy                    Int                   @default(0)
+  subsidy_future             Int                   @default(0)
+  promotion                  Int                   @default(0)
+  total_price                Int                   @default(0)
+  qty                        Int                   @default(0)
+  price_paid                 Int                   @default(0)
+  apply_type                 Int?
+  apply_additional           Int?
+  apply_scrap                Boolean?
+  scrap_info                 Json?
+  gender                     Int?
+  business_number            String?               @db.VarChar(255)
+  business_name              String?               @db.VarChar(255)
+  corp_number                String?               @db.VarChar(255)
+  corp_ceo_name              String?               @db.VarChar(255)
+  rrn_back                   String?               @db.VarChar(255)
+  cert_numbers               Json
+  agreement_check_date       DateTime?             @db.DateTime(0)
+  purchase_signs             Json
+  bike_number                String?               @db.VarChar(255)
+  bike_serial                String?               @db.VarChar(255)
+  bike_regi_date             DateTime?             @db.Date
+  insurance_state            Boolean?              @default(false)
+  bss_registered             Boolean?
+  subsidy_apply_number       Int?
+  subsidy_applied            Boolean?
+  subsidy_applied_date       DateTime?             @db.DateTime(0)
+  subsidy_qualified          Boolean?
+  subsidy_qualified_date     DateTime?             @db.DateTime(0)
+  subsidy_unqualified_reason String?               @db.VarChar(255)
+  subsidy_available          Boolean?
+  subsidy_available_date     DateTime?             @db.DateTime(0)
+  subsidy_selected           Boolean?
+  subsidy_selected_date      DateTime?             @db.DateTime(0)
+  subsidy_unselected_reason  String?               @db.VarChar(255)
+  subsidy_deliver_due        DateTime?             @db.DateTime(0)
+  subsidy_paid_apply_due     DateTime?             @db.DateTime(0)
+  subsidy_paid_applied       Boolean?
+  subsidy_paid_applied_date  DateTime?             @db.DateTime(0)
+  subsidy_paid_approved      Boolean?
+  subsidy_paid               Boolean?
+  subsidy_paid_date          DateTime?             @db.DateTime(0)
+  is_bipass                  Boolean?
+  bipass_registered_date     DateTime?             @db.DateTime(0)
+  has_inventory              Boolean?
+  subsidy_paid_check         Boolean?
+  delivery_date              DateTime?             @db.Date
+  delivery_type              Int?
+  delivery_center_name       String?               @db.VarChar(255)
+  delivery_center_address    String?               @db.VarChar(255)
+  delivery_center_phone      String?               @db.VarChar(255)
+  is_delivered               Boolean?
+  doc_done_check             Boolean               @default(false)
+  request_doc                Json?
+  doc_ready                  Boolean               @default(false)
+  canceled                   Boolean               @default(false)
+  canceled_reason            String?               @db.VarChar(255)
+  bipass_second_alarm_date   DateTime?             @db.DateTime(0)
+  bipass_thrid_alarm_date    DateTime?             @db.DateTime(0)
+  memo                       Json?
+  commission                 Int?
+  commission_received        Boolean?
+  bike_product_id            Int?
+  electric_bike_id           Int?
+  bss_plan_id                Int?
+  user_id                    Int?
+  reservation_status         Int?
+  additional_subsidy         Json
+  options                    Json
+  sign_doc_id                String?               @default("") @db.VarChar(255)
+  sign_doc_paid_id           String?               @db.VarChar(255)
+  sign_doc_paid_done         Boolean?
+  sign_doc_bss_id            String?               @db.VarChar(255)
+  sign_doc_bss_done          Boolean?
+  has_doc_hr                 Boolean               @default(false)
+  has_doc_trade              Boolean               @default(false)
+  has_doc_purchase           Boolean               @default(false)
+  agent_service              Boolean?
+  insurance_service          Boolean?
+  subsidy_approved           Boolean?
+  is_subsidy_unselect        Boolean               @default(false)
+  subsidy_unselect_reason    String?               @db.VarChar(255)
+  createdAt                  DateTime              @db.DateTime(0)
+  updatedAt                  DateTime              @db.DateTime(0)
+  AfterServices              AfterServices[]
+  Auctions                   Auctions[]
+  PaymentKCPs                PaymentKCPs[]
+  Payments                   Payments[]
+  PurchaseFiles              PurchaseFiles[]
+  PurchaseMemos              PurchaseMemos[]
+  PurchaseMessages           PurchaseMessages[]
+  PurchaseOptions            PurchaseOptions[]
+  PurchaseRentalSlots        PurchaseRentalSlots[]
+  PurchaseReserveds          PurchaseReserveds[]
+  PurchaseReviews            PurchaseReviews[]
+  BikeProducts               BikeProducts?         @relation(fields: [bike_product_id], references: [id], onDelete: Restrict, map: "purchases_ibfk_11518")
+  ElectricBikes              ElectricBikes?        @relation(fields: [electric_bike_id], references: [id], onDelete: Restrict, map: "purchases_ibfk_11519")
+  BssPlans                   BssPlans?             @relation(fields: [bss_plan_id], references: [id], onDelete: Restrict, map: "purchases_ibfk_11520")
+  Users                      Users?                @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "purchases_ibfk_11521")
+  TradeIns                   TradeIns[]
+  Vehicles                   Vehicles[]
+
+  @@index([bike_product_id], map: "bike_product_id")
+  @@index([bss_plan_id], map: "bss_plan_id")
+  @@index([electric_bike_id], map: "electric_bike_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalAccidents {
+  id                  Int       @id @default(autoincrement())
+  amount              Int       @default(0)
+  type                Int       @default(0)
+  deposit_date        DateTime? @db.DateTime(0)
+  bank_account_number String?   @db.VarChar(255)
+  bank_account_name   String?   @db.VarChar(255)
+  transfer_date       DateTime? @db.DateTime(0)
+  file_name           String?   @default("") @db.VarChar(255)
+  file_url            String?   @default("") @db.VarChar(255)
+  note                String?   @db.VarChar(255)
+  rental_id           Int?
+  createdAt           DateTime  @db.DateTime(0)
+  updatedAt           DateTime  @db.DateTime(0)
+  Rentals             Rentals?  @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalaccidents_ibfk_1")
+
+  @@index([rental_id], map: "rental_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikeEventLists {
+  id             Int          @id @default(autoincrement())
+  name           String?      @db.VarChar(255)
+  phone          String?      @db.VarChar(255)
+  rental_id      Int?
+  rental_bike_id Int?
+  createdAt      DateTime     @db.DateTime(0)
+  updatedAt      DateTime     @db.DateTime(0)
+  Rentals        Rentals?     @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalbikeeventlists_ibfk_4849")
+  RentalBikes    RentalBikes? @relation(fields: [rental_bike_id], references: [id], onDelete: Restrict, map: "rentalbikeeventlists_ibfk_4850")
+
+  @@index([rental_bike_id], map: "rental_bike_id")
+  @@index([rental_id], map: "rental_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikeFiles {
+  id             Int          @id @default(autoincrement())
+  file_name      String       @default("") @db.VarChar(255)
+  file_url       String       @default("") @db.VarChar(255)
+  is_represent   Boolean      @default(false)
+  order          Int          @default(0)
+  rental_bike_id Int?
+  createdAt      DateTime     @db.DateTime(0)
+  updatedAt      DateTime     @db.DateTime(0)
+  RentalBikes    RentalBikes? @relation(fields: [rental_bike_id], references: [id], onDelete: Restrict, map: "rentalbikefiles_ibfk_1")
+
+  @@index([rental_bike_id], map: "rental_bike_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikeMethods {
+  id               Int          @id @default(autoincrement())
+  type             Int          @default(0)
+  available_period Json?
+  rental_bike_id   Int?
+  createdAt        DateTime     @db.DateTime(0)
+  updatedAt        DateTime     @db.DateTime(0)
+  RentalBikes      RentalBikes? @relation(fields: [rental_bike_id], references: [id], onDelete: Restrict, map: "rentalbikemethods_ibfk_1")
+
+  @@index([rental_bike_id], map: "rental_bike_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikeOptions {
+  id             Int          @id @default(autoincrement())
+  title          String       @default("") @db.VarChar(255)
+  values         Json
+  is_required    Boolean      @default(false)
+  order          Int          @default(0)
+  type           Int          @default(2)
+  rental_bike_id Int?
+  createdAt      DateTime     @db.DateTime(0)
+  updatedAt      DateTime     @db.DateTime(0)
+  RentalBikes    RentalBikes? @relation(fields: [rental_bike_id], references: [id], onDelete: Restrict, map: "rentalbikeoptions_ibfk_1")
+
+  @@index([rental_bike_id], map: "rental_bike_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikePrices {
+  id               Int          @id @default(autoincrement())
+  age              Int?
+  rental_bike_type Int?
+  rental_method    Int?
+  insurance_type   Int?
+  period           Int?
+  daily_price      Int?
+  weekly_price     Int?
+  monthly_price    Int?
+  rental_bike_id   Int?
+  createdAt        DateTime     @db.DateTime(0)
+  updatedAt        DateTime     @db.DateTime(0)
+  RentalBikes      RentalBikes? @relation(fields: [rental_bike_id], references: [id], onDelete: Restrict, map: "rentalbikeprices_ibfk_1")
+
+  @@index([rental_bike_id], map: "rental_bike_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikePricingInsurances {
+  id                 Int                  @id @default(autoincrement())
+  data               Json
+  createdAt          DateTime             @db.DateTime(0)
+  updatedAt          DateTime             @db.DateTime(0)
+  RentalBikePricings RentalBikePricings[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikePricingPolicies {
+  id                           Int      @id @default(autoincrement())
+  delivery_price               Int
+  bss_price                    Int?
+  pg_rate                      Decimal  @db.Decimal(12, 6)
+  mileage_rate                 Decimal  @db.Decimal(12, 6)
+  residual_value_expected_rate Decimal  @db.Decimal(12, 6)
+  margin_rate_bike             Decimal  @db.Decimal(12, 6)
+  margin_rate_insurance        Decimal  @db.Decimal(12, 6)
+  createdAt                    DateTime @db.DateTime(0)
+  updatedAt                    DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikePricings {
+  id                                       Int                          @id @default(autoincrement())
+  calculation_version                      Int
+  bike_data                                Json
+  pg_rate                                  Decimal                      @db.Decimal(12, 6)
+  mileage_rate                             Decimal                      @db.Decimal(12, 6)
+  memo                                     String?                      @db.Text
+  rental_bike_id                           Int?
+  user_id                                  Int?
+  createdAt                                DateTime                     @db.DateTime(0)
+  updatedAt                                DateTime                     @db.DateTime(0)
+  margin_rate_insurance                    Decimal                      @db.Decimal(12, 6)
+  required_service_cost                    Json
+  return_bike_residual_value_expected_rate Decimal                      @db.Decimal(12, 6)
+  margin_rate_takeover_bike                Decimal                      @db.Decimal(12, 6)
+  margin_rate_return_bike                  Decimal                      @db.Decimal(12, 6)
+  admin_discount_rate                      Decimal                      @default(0.000000) @db.Decimal(12, 6)
+  insurance_data_id                        Int?
+  cached_price                             Json
+  RentalBikes                              RentalBikes?                 @relation(fields: [rental_bike_id], references: [id], onDelete: Restrict, map: "rentalbikepricings_ibfk_1433")
+  Users                                    Users?                       @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "rentalbikepricings_ibfk_1434")
+  RentalBikePricingInsurances              RentalBikePricingInsurances? @relation(fields: [insurance_data_id], references: [id], onDelete: Restrict, map: "rentalbikepricings_ibfk_1435")
+
+  @@index([insurance_data_id], map: "insurance_data_id")
+  @@index([rental_bike_id], map: "rental_bike_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikeTypes {
+  id             Int          @id @default(autoincrement())
+  type           Int          @default(0)
+  sub_type       Int?
+  compositions   Json?
+  bss_prices     Json?
+  rental_bike_id Int?
+  createdAt      DateTime     @db.DateTime(0)
+  updatedAt      DateTime     @db.DateTime(0)
+  RentalBikes    RentalBikes? @relation(fields: [rental_bike_id], references: [id], onDelete: Restrict, map: "rentalbiketypes_ibfk_1")
+
+  @@index([rental_bike_id], map: "rental_bike_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalBikes {
+  id                    Int                    @id @default(autoincrement())
+  title                 String?                @db.VarChar(255)
+  status                Int                    @default(0)
+  views                 Int                    @default(0)
+  special_sale_txt      String?                @db.VarChar(255)
+  extra_chips           Json?
+  is_special_product    Boolean?
+  desc_image_url        Json?
+  desc                  Json?
+  experiences           Json?
+  product_order         Int?
+  tags                  Json?
+  rental_methods        Json?
+  insurance_types       Json?
+  delivery_date         String?                @db.VarChar(255)
+  delivery_method       String?                @db.VarChar(255)
+  bss_included          Boolean                @default(false)
+  bss_company_id        Int?
+  bike_model_spec_id    Int?
+  createdAt             DateTime               @db.DateTime(0)
+  updatedAt             DateTime               @db.DateTime(0)
+  type                  Int                    @default(0)
+  customer_visible_type Int                    @default(0)
+  additional_desc       String?                @db.Text
+  vehicle_id            Int?
+  RentalBikeEventLists  RentalBikeEventLists[]
+  RentalBikeFiles       RentalBikeFiles[]
+  RentalBikeMethods     RentalBikeMethods[]
+  RentalBikeOptions     RentalBikeOptions[]
+  RentalBikePrices      RentalBikePrices[]
+  RentalBikePricings    RentalBikePricings[]
+  RentalBikeTypes       RentalBikeTypes[]
+  BssCompanies          BssCompanies?          @relation(fields: [bss_company_id], references: [id], onDelete: Restrict, map: "rentalbikes_ibfk_470")
+  BikeModelSpecs        BikeModelSpecs?        @relation(fields: [bike_model_spec_id], references: [id], onDelete: Restrict, map: "rentalbikes_ibfk_471")
+  Vehicles              Vehicles?              @relation(fields: [vehicle_id], references: [id], onDelete: Restrict, map: "rentalbikes_ibfk_472")
+  Rentals               Rentals[]
+
+  @@index([bike_model_spec_id], map: "bike_model_spec_id")
+  @@index([bss_company_id], map: "bss_company_id")
+  @@index([vehicle_id], map: "vehicle_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalChangeHistories {
+  id                             Int      @id @default(autoincrement())
+  change_logs                    Json
+  subscription                   Int?
+  subscription_prev              Int?
+  bss_subscription               Int?
+  bss_subscription_prev          Int?
+  option_price_subscription      Int?
+  option_price_subscription_prev Int?
+  total_subscription             Int?
+  total_subscription_prev        Int?
+  change_contract_id             String?  @db.VarChar(255)
+  change_contract_done           Boolean?
+  user_id                        Int?
+  rental_id                      Int?
+  createdAt                      DateTime @db.DateTime(0)
+  updatedAt                      DateTime @db.DateTime(0)
+  Users                          Users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "rentalchangehistories_ibfk_4951")
+  Rentals                        Rentals? @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalchangehistories_ibfk_4952")
+
+  @@index([rental_id], map: "rental_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalFiles {
+  id        Int      @id @default(autoincrement())
+  file_name String   @default("") @db.VarChar(255)
+  file_url  String   @default("") @db.VarChar(255)
+  file_type Int      @default(0)
+  is_secure Boolean  @default(false)
+  rental_id Int?
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  Rentals   Rentals? @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalfiles_ibfk_1")
+
+  @@index([rental_id], map: "rental_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalMemos {
+  id             Int       @id @default(autoincrement())
+  content        String    @db.Text
+  user_id        Int?
+  rental_id      Int?
+  pin            Int       @default(0)
+  classification Int       @default(0)
+  remind_date    DateTime? @db.DateTime(0)
+  createdAt      DateTime  @db.DateTime(0)
+  updatedAt      DateTime  @db.DateTime(0)
+  Users          Users?    @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "rentalmemos_ibfk_4957")
+  Rentals        Rentals?  @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalmemos_ibfk_4958")
+
+  @@index([rental_id], map: "rental_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalMessages {
+  id                      Int      @id @default(autoincrement())
+  status                  Int      @default(0)
+  message_type            String   @default("") @db.VarChar(255)
+  message_id              String   @default("") @db.VarChar(255)
+  request_id              String   @default("") @db.VarChar(255)
+  request_time            String   @default("") @db.VarChar(255)
+  complete_time           String   @default("") @db.VarChar(255)
+  plus_friend_id          String   @default("") @db.VarChar(255)
+  template_code           String   @default("") @db.VarChar(255)
+  country_code            String   @default("") @db.VarChar(255)
+  to                      String   @default("") @db.VarChar(255)
+  from                    String   @default("") @db.VarChar(255)
+  subject                 String   @default("") @db.VarChar(255)
+  content                 String   @db.Text
+  request_status_code     String   @default("") @db.VarChar(255)
+  request_status_name     String   @default("") @db.VarChar(255)
+  request_status_desc     String   @default("") @db.VarChar(255)
+  message_status_code     String   @default("") @db.VarChar(255)
+  message_status_name     String   @default("") @db.VarChar(255)
+  message_status_desc     String   @default("") @db.VarChar(255)
+  use_sms_failover        Boolean  @default(false)
+  sms_service_id          String   @default("") @db.VarChar(255)
+  sms_message_id          String   @default("") @db.VarChar(255)
+  sms_request_id          String   @default("") @db.VarChar(255)
+  sms_request_status_code String   @default("") @db.VarChar(255)
+  sms_request_status_name String   @default("") @db.VarChar(255)
+  sms_request_status_desc String   @default("") @db.VarChar(255)
+  sms_message_status      String   @default("") @db.VarChar(255)
+  sms_message_status_code String   @default("") @db.VarChar(255)
+  sms_message_status_name String   @default("") @db.VarChar(255)
+  sms_message_status_desc String   @default("") @db.VarChar(255)
+  user_id                 Int?
+  rental_id               Int?
+  mms_file_name           String?  @default("") @db.VarChar(255)
+  createdAt               DateTime @db.DateTime(0)
+  updatedAt               DateTime @db.DateTime(0)
+  Users                   Users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "rentalmessages_ibfk_4935")
+  Rentals                 Rentals? @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalmessages_ibfk_4936")
+
+  @@index([rental_id], map: "rental_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalPaymentFines {
+  id                Int          @id @default(autoincrement())
+  status            Int          @default(0)
+  amount            Int          @default(0)
+  violate_date      DateTime     @db.DateTime(0)
+  violate_location  String?      @db.VarChar(255)
+  violate_note      String?      @db.VarChar(255)
+  issuer            String?      @db.VarChar(255)
+  badream_paid_date DateTime?    @db.DateTime(0)
+  paid_type         Int?
+  payment_date      DateTime     @db.DateTime(0)
+  paid_due          DateTime?    @db.DateTime(0)
+  paid_date         DateTime?    @db.DateTime(0)
+  paid_amount       Int?
+  note              String?      @db.VarChar(255)
+  payment_kcp_id    Int?
+  rental_id         Int?
+  createdAt         DateTime     @db.DateTime(0)
+  updatedAt         DateTime     @db.DateTime(0)
+  issue_number      String?      @db.VarChar(255)
+  PaymentKCPs       PaymentKCPs? @relation(fields: [payment_kcp_id], references: [id], onDelete: Restrict, map: "rentalpaymentfines_ibfk_4973")
+  Rentals           Rentals?     @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalpaymentfines_ibfk_4974")
+
+  @@index([payment_kcp_id], map: "payment_kcp_id")
+  @@index([rental_id], map: "rental_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalPaymentManuals {
+  id             Int          @id @default(autoincrement())
+  status         Int          @default(0)
+  name           String?      @db.VarChar(255)
+  amount         Int          @default(0)
+  paid_type      Int?
+  payment_date   DateTime?    @db.DateTime(0)
+  paid_date      DateTime?    @db.DateTime(0)
+  paid_amount    Int?
+  payment_kcp_id Int?
+  rental_id      Int?
+  createdAt      DateTime     @db.DateTime(0)
+  updatedAt      DateTime     @db.DateTime(0)
+  PaymentKCPs    PaymentKCPs? @relation(fields: [payment_kcp_id], references: [id], onDelete: Restrict, map: "rentalpaymentmanuals_ibfk_5195")
+  Rentals        Rentals?     @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalpaymentmanuals_ibfk_5196")
+
+  @@index([payment_kcp_id], map: "payment_kcp_id")
+  @@index([rental_id], map: "rental_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalPaymentMethods {
+  id                           Int      @id @default(autoincrement())
+  status                       Int      @default(0)
+  type                         Int      @default(0)
+  bank_name                    String?  @db.VarChar(255)
+  bank_account                 String?  @db.VarChar(255)
+  bank_account_holder          String?  @db.VarChar(255)
+  bank_account_holder_phone    String?  @db.VarChar(255)
+  bank_account_holder_bd       String?  @db.VarChar(255)
+  bank_account_holder_relation String?  @db.VarChar(255)
+  card_company                 String?  @db.VarChar(255)
+  card_number                  String?  @db.VarChar(255)
+  billing_key                  String?  @db.VarChar(255)
+  rental_id                    Int?
+  createdAt                    DateTime @db.DateTime(0)
+  updatedAt                    DateTime @db.DateTime(0)
+  Rentals                      Rentals? @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalpaymentmethods_ibfk_1")
+
+  @@index([rental_id], map: "rental_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalPaymentTables {
+  id                         Int                          @id @default(autoincrement())
+  status                     Int                          @default(0)
+  amount                     Int                          @default(0)
+  paid_type                  Int?
+  payment_date               DateTime                     @db.DateTime(0)
+  paid_date                  DateTime?                    @db.DateTime(0)
+  payment_round              Int
+  paid_amount                Int?
+  note                       String?                      @db.VarChar(255)
+  type                       Int                          @default(0)
+  payment_kcp_id             Int?
+  rental_id                  Int?
+  createdAt                  DateTime                     @db.DateTime(0)
+  updatedAt                  DateTime                     @db.DateTime(0)
+  PaymentKCPs                PaymentKCPs?                 @relation(fields: [payment_kcp_id], references: [id], onDelete: Restrict, map: "rentalpaymenttables_ibfk_2721")
+  Rentals                    Rentals?                     @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalpaymenttables_ibfk_2722")
+  RentalUnpaymentManagements RentalUnpaymentManagements[]
+
+  @@index([payment_kcp_id], map: "payment_kcp_id")
+  @@index([rental_id], map: "rental_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalReviewFiles {
+  id               Int            @id @default(autoincrement())
+  file_name        String         @default("") @db.VarChar(255)
+  file_url         String         @default("") @db.VarChar(255)
+  file_type        String         @default("") @db.VarChar(255)
+  rental_review_id Int?
+  createdAt        DateTime       @db.DateTime(0)
+  updatedAt        DateTime       @db.DateTime(0)
+  RentalReviews    RentalReviews? @relation(fields: [rental_review_id], references: [id], onDelete: Restrict, map: "rentalreviewfiles_ibfk_1")
+
+  @@index([rental_review_id], map: "rental_review_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalReviews {
+  id                Int                 @id @default(autoincrement())
+  content           String?             @db.Text
+  score_comfortable Float?              @default(0)
+  badream_content   String?             @db.Text
+  score_badream     Float?
+  bike_content      String?             @db.Text
+  score_bike        Float?
+  rental_id         Int?
+  createdAt         DateTime            @db.DateTime(0)
+  updatedAt         DateTime            @db.DateTime(0)
+  RentalReviewFiles RentalReviewFiles[]
+  Rentals           Rentals?            @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalreviews_ibfk_1")
+
+  @@index([rental_id], map: "rental_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalUnpaymentDailyStatistics {
+  id                          Int       @id @default(autoincrement())
+  cumulative_unpayment_amount Int       @default(0)
+  unpayment_rental_qty        Int       @default(0)
+  unpayment_rate              Float     @default(0)
+  average_unpayment_date      Float     @default(0)
+  terminated_qty              Int       @default(0)
+  closed_qty                  Int       @default(0)
+  total_fine_amount           Int       @default(0)
+  total_etc_amount            Int       @default(0)
+  total_claim_amount          Int       @default(0)
+  statistic_date              DateTime? @db.DateTime(0)
+  createdAt                   DateTime  @db.DateTime(0)
+  updatedAt                   DateTime  @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RentalUnpaymentManagements {
+  id                      Int                  @id @default(autoincrement())
+  status                  Int                  @default(0)
+  unpayment_start_date    DateTime?            @db.DateTime(0)
+  action_mileage          Boolean              @default(false)
+  action_mileage_date     DateTime?            @db.DateTime(0)
+  action_suspend          Boolean              @default(false)
+  action_suspend_date     DateTime?            @db.DateTime(0)
+  action_find             Boolean              @default(false)
+  action_find_date        DateTime?            @db.DateTime(0)
+  action_fine             Boolean              @default(false)
+  action_fine_date        DateTime?            @db.DateTime(0)
+  action_terminate        Boolean              @default(false)
+  action_terminate_date   DateTime?            @db.DateTime(0)
+  action_return           Boolean              @default(false)
+  action_return_date      DateTime?            @db.DateTime(0)
+  resolved_at             DateTime?            @db.DateTime(0)
+  rental_payment_table_id Int?
+  rental_id               Int?
+  createdAt               DateTime             @db.DateTime(0)
+  updatedAt               DateTime             @db.DateTime(0)
+  RentalPaymentTables     RentalPaymentTables? @relation(fields: [rental_payment_table_id], references: [id], onDelete: Restrict, map: "rentalunpaymentmanagements_ibfk_265")
+  Rentals                 Rentals?             @relation(fields: [rental_id], references: [id], onDelete: Restrict, map: "rentalunpaymentmanagements_ibfk_266")
+
+  @@index([rental_id], map: "rental_id")
+  @@index([rental_payment_table_id], map: "rental_payment_table_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Rentals {
+  id                                           Int                          @id @default(autoincrement())
+  rental_number                                String?                      @db.VarChar(255)
+  status                                       Int                          @default(0)
+  runtime_status                               Int                          @default(0)
+  applicant_type                               Int?
+  applicant_name                               String?                      @db.VarChar(255)
+  applicant_phone                              String?                      @db.VarChar(255)
+  applicant_bd                                 String?                      @db.VarChar(255)
+  option_price_lump_sum                        Int                          @default(0)
+  option_price_subscription                    Int                          @default(0)
+  options_basic                                Json
+  options                                      Json
+  age_range                                    Int
+  bike_type                                    Int
+  takeover                                     Boolean
+  insurance_type                               Int
+  insurance_company                            String?                      @db.VarChar(255)
+  period                                       Float
+  payment_period                               Int?
+  payment_period_date                          Int?
+  subscription                                 Int?
+  bss_subscription                             Int?
+  total_subscription                           Int?
+  email                                        String?                      @db.VarChar(255)
+  address                                      String?                      @db.VarChar(255)
+  address_detail                               String?                      @db.VarChar(255)
+  zip_code                                     String?                      @db.VarChar(255)
+  address_deliver                              String?                      @db.VarChar(255)
+  address_detail_deliver                       String?                      @db.VarChar(255)
+  zip_code_deliver                             String?                      @db.VarChar(255)
+  emergency_number                             String?                      @db.VarChar(255)
+  user_type                                    Int?
+  user_name                                    String?                      @db.VarChar(255)
+  user_phone                                   String?                      @db.VarChar(255)
+  user_bd                                      String?                      @db.VarChar(255)
+  emergency_relation                           String?                      @db.VarChar(255)
+  emergency_relation_type                      Int?
+  business_name                                String?                      @db.VarChar(255)
+  business_number                              String?                      @db.VarChar(255)
+  corp_number                                  String?                      @db.VarChar(255)
+  ceo_name                                     String?                      @db.VarChar(255)
+  manager_number                               String?                      @db.VarChar(255)
+  cert_numbers                                 Json?
+  contract_doc_id                              String?                      @db.VarChar(255)
+  contract_doc_done                            Boolean?
+  receipt_doc_id                               String?                      @db.VarChar(255)
+  receipt_doc_done                             Boolean?
+  selected_payment_method_id                   Int?
+  bike_color                                   String?                      @db.VarChar(255)
+  bike_number                                  String?                      @db.VarChar(255)
+  bike_serial                                  String?                      @db.VarChar(255)
+  bike_regi_date                               DateTime?                    @db.Date
+  bike_model                                   String?                      @db.VarChar(255)
+  bike_maker                                   String?                      @db.VarChar(255)
+  bss_price                                    Json?
+  approved                                     Boolean?
+  use_area                                     String?                      @db.VarChar(255)
+  use_area_applicant                           String?                      @db.VarChar(255)
+  delivered_date                               DateTime?                    @db.DateTime(0)
+  delivered_address                            String?                      @db.VarChar(255)
+  delivered_address_detail                     String?                      @db.VarChar(255)
+  pickup_date                                  DateTime?                    @db.DateTime(0)
+  start_date                                   DateTime?                    @db.DateTime(0)
+  end_date                                     DateTime?                    @db.DateTime(0)
+  pickup_location                              String?                      @db.VarChar(255)
+  insurance_done_date                          DateTime?                    @db.DateTime(0)
+  pdi_done_date                                DateTime?                    @db.DateTime(0)
+  bike_regi_done_date                          DateTime?                    @db.DateTime(0)
+  pickup_alarm_count                           Int                          @default(0)
+  payment_balance_try_count                    Int                          @default(0)
+  cancel_reason                                String?                      @db.VarChar(255)
+  cancel_date                                  DateTime?                    @db.DateTime(0)
+  terminate_reason                             String?                      @db.VarChar(255)
+  terminate_date                               DateTime?                    @db.DateTime(0)
+  collection_cost                              Int?
+  recovery_cost                                Int?
+  transfer_name                                String?                      @db.VarChar(255)
+  transfer_phone                               String?                      @db.VarChar(255)
+  transfer_rental_id                           Int?
+  rental_bike_id                               Int?
+  user_id                                      Int?
+  purchase_rental_slot_id                      Int?
+  vehicle_id                                   Int?
+  createdAt                                    DateTime                     @db.DateTime(0)
+  updatedAt                                    DateTime                     @db.DateTime(0)
+  AfterServices                                AfterServices[]
+  MileageRentalStatuses                        MileageRentalStatuses?
+  PaymentKCPs                                  PaymentKCPs[]
+  RentalAccidents                              RentalAccidents[]
+  RentalBikeEventLists                         RentalBikeEventLists[]
+  RentalChangeHistories                        RentalChangeHistories[]
+  RentalFiles                                  RentalFiles[]
+  RentalMemos                                  RentalMemos[]
+  RentalMessages                               RentalMessages[]
+  RentalPaymentFines                           RentalPaymentFines[]
+  RentalPaymentManuals                         RentalPaymentManuals[]
+  RentalPaymentMethods                         RentalPaymentMethods[]
+  RentalPaymentTables                          RentalPaymentTables[]
+  RentalReviews                                RentalReviews[]
+  RentalUnpaymentManagements                   RentalUnpaymentManagements[]
+  RentalBikes                                  RentalBikes?                 @relation(fields: [rental_bike_id], references: [id], onDelete: Restrict, map: "rentals_ibfk_12107")
+  Users                                        Users?                       @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "rentals_ibfk_12108")
+  PurchaseRentalSlots                          PurchaseRentalSlots?         @relation(fields: [purchase_rental_slot_id], references: [id], onDelete: Restrict, map: "rentals_ibfk_12109")
+  Vehicles_Rentals_vehicle_idToVehicles        Vehicles?                    @relation("Rentals_vehicle_idToVehicles", fields: [vehicle_id], references: [id], onDelete: Restrict, map: "rentals_ibfk_12110")
+  Vehicles_Vehicles_current_rental_idToRentals Vehicles[]                   @relation("Vehicles_current_rental_idToRentals")
+
+  @@index([purchase_rental_slot_id], map: "purchase_rental_slot_id")
+  @@index([rental_bike_id], map: "rental_bike_id")
+  @@index([user_id], map: "user_id")
+  @@index([vehicle_id], map: "vehicle_id")
+}
+
+model Sessions {
+  sid       String    @id @db.VarChar(255)
+  expires   DateTime? @db.DateTime(0)
+  data      String?   @db.Text
+  createdAt DateTime  @db.DateTime(0)
+  updatedAt DateTime  @db.DateTime(0)
+}
+
+model SharingAgreements {
+  is_agree  Boolean
+  user_id   Int
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+
+  @@id([is_agree, user_id])
+}
+
+model SharingRegisters {
+  license_number String   @db.VarChar(255)
+  user_id        Int      @id
+  createdAt      DateTime @db.DateTime(0)
+  updatedAt      DateTime @db.DateTime(0)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model SharingReservations {
+  id                          Int       @id @default(autoincrement())
+  start_time                  DateTime? @db.DateTime(0)
+  end_time                    DateTime? @db.DateTime(0)
+  where_to                    String?   @db.VarChar(255)
+  actual_start_time           DateTime? @db.DateTime(0)
+  actual_end_time             DateTime? @db.DateTime(0)
+  locker_number               String?   @db.VarChar(255)
+  locker_password             String?   @db.VarChar(255)
+  review_score_electric_bike  Int?
+  review_score_dcamp          Int?
+  review_answer_electric_bike String?   @db.VarChar(255)
+  review_answer_etc           String?   @db.VarChar(255)
+  user_id                     Int?
+  createdAt                   DateTime  @db.DateTime(0)
+  updatedAt                   DateTime  @db.DateTime(0)
+  Users                       Users?    @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "sharingreservations_ibfk_1")
+
+  @@index([start_time], map: "idx_sharing_start_time")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model SubsidyStatuses {
+  id                 Int      @id @default(autoincrement())
+  sido               String   @default("") @db.VarChar(255)
+  sigun              String   @default("") @db.VarChar(255)
+  method_regular     String   @default("") @db.VarChar(255)
+  method_priority    String   @default("") @db.VarChar(255)
+  total_count        Int      @default(0)
+  total_priority     Int      @default(0)
+  total_business     Int      @default(0)
+  total_delivery     Int      @default(0)
+  total_regular      Int      @default(0)
+  apply_count        Int      @default(0)
+  apply_priority     Int      @default(0)
+  apply_business     Int      @default(0)
+  apply_delivery     Int      @default(0)
+  apply_regular      Int      @default(0)
+  delivered_count    Int      @default(0)
+  delivered_priority Int      @default(0)
+  delivered_business Int      @default(0)
+  delivered_delivery Int      @default(0)
+  delivered_regular  Int      @default(0)
+  left_count         Int      @default(0)
+  left_priority      Int      @default(0)
+  left_business      Int      @default(0)
+  left_delivery      Int      @default(0)
+  left_regular       Int      @default(0)
+  note               String   @db.Text
+  today              DateTime @db.Date
+  createdAt          DateTime @db.DateTime(0)
+  updatedAt          DateTime @db.DateTime(0)
+
+  @@index([sigun], map: "subsidy_statuses_sigun")
+  @@index([today], map: "subsidy_statuses_today")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model TradeInFiles {
+  id           Int       @id @default(autoincrement())
+  file_name    String    @default("") @db.VarChar(255)
+  file_url     String    @default("") @db.VarChar(255)
+  type         Int       @default(0)
+  key          String?   @db.VarChar(255)
+  is_represent Boolean   @default(false)
+  order        Int       @default(0)
+  trade_in_id  Int?
+  createdAt    DateTime  @db.DateTime(0)
+  updatedAt    DateTime  @db.DateTime(0)
+  TradeIns     TradeIns? @relation(fields: [trade_in_id], references: [id], onDelete: Restrict, map: "tradeinfiles_ibfk_1")
+
+  @@index([trade_in_id], map: "trade_in_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model TradeIns {
+  id              Int            @id @default(autoincrement())
+  year            Int?
+  mileage         Int?
+  video_url       String?        @db.VarChar(255)
+  tunes           Json?
+  history_checkup Json?
+  desc            String?        @db.Text
+  qtn_key         Int?
+  qtn_key_smart   Int?
+  has_doc         Boolean?
+  is_abolish      Boolean?
+  trade_in_value  Int?
+  is_trade        Boolean?
+  status          Int            @default(0)
+  purchase_id     Int?
+  bike_model_id   Int?
+  createdAt       DateTime       @db.DateTime(0)
+  updatedAt       DateTime       @db.DateTime(0)
+  TradeInFiles    TradeInFiles[]
+  Purchases       Purchases?     @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "tradeins_ibfk_5187")
+  BikeModels      BikeModels?    @relation(fields: [bike_model_id], references: [id], onDelete: Restrict, map: "tradeins_ibfk_5188")
+
+  @@index([bike_model_id], map: "bike_model_id")
+  @@index([purchase_id], map: "purchase_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model UseAreaSubsidies {
+  id                            Int      @id @default(autoincrement())
+  use_area                      String?  @db.VarChar(255)
+  type                          String?  @db.VarChar(255)
+  subsidy_unit_delivery         Int?     @default(0)
+  subsidy_amount_delivery       Int?
+  subsidy_unit_small_business   Int?     @default(0)
+  subsidy_amount_small_business Int?
+  subsidy_unit_disabled         Int?     @default(0)
+  subsidy_amount_disabled       Int?
+  subsidy_unit_vulnerable       Int?     @default(0)
+  subsidy_amount_vulnerable     Int?
+  subsidy_unit_farmer           Int?     @default(0)
+  subsidy_amount_farmer         Int?
+  subsidy_unit_reg              Int?     @default(0)
+  subsidy_amount_reg            Int?
+  subsidy_unit_bss              Int?     @default(0)
+  subsidy_amount_bss            Int?
+  subsidy_unit_child            Int?     @default(0)
+  subsidy_amount_child          Int?
+  subsidy_unit_meritorious      Int?     @default(0)
+  subsidy_amount_meritorious    Int?
+  subsidy_unit_delivery_new     Int?     @default(0)
+  subsidy_amount_delivery_new   Int?
+  createdAt                     DateTime @db.DateTime(0)
+  updatedAt                     DateTime @db.DateTime(0)
+  regional_additional_docs      Json
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model UserAdmins {
+  id        Int       @id @default(autoincrement())
+  authority Json
+  user_id   Int?
+  createdAt DateTime  @db.DateTime(0)
+  updatedAt DateTime  @db.DateTime(0)
+  deletedAt DateTime? @db.DateTime(0)
+  Users     Users?    @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "useradmins_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model UserAgreements {
+  id           Int         @id @default(autoincrement())
+  user_id      Int?
+  agreement_id Int?
+  createdAt    DateTime    @db.DateTime(0)
+  updatedAt    DateTime    @db.DateTime(0)
+  Users        Users?      @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "useragreements_ibfk_2093")
+  Agreements   Agreements? @relation(fields: [agreement_id], references: [id], onDelete: Restrict, map: "useragreements_ibfk_2094")
+
+  @@index([agreement_id], map: "agreement_id")
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model UserFcmTokens {
+  id        Int       @id @default(autoincrement())
+  fcm_token String    @default("") @db.VarChar(255)
+  app_token String    @db.Text
+  user_id   Int?
+  createdAt DateTime  @db.DateTime(0)
+  updatedAt DateTime  @db.DateTime(0)
+  deletedAt DateTime? @db.DateTime(0)
+  Users     Users?    @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "userfcmtokens_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model UserLogs {
+  id          Int      @id @default(autoincrement())
+  access_date String   @db.VarChar(255)
+  user_id     Int?
+  createdAt   DateTime @db.DateTime(0)
+  updatedAt   DateTime @db.DateTime(0)
+  Users       Users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "userlogs_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model UserPhoneAuths {
+  id               Int      @id @default(autoincrement())
+  rsp_cd           String   @default("") @db.VarChar(255)
+  res_msg          String   @default("") @db.VarChar(255)
+  result_cd        String   @default("") @db.VarChar(255)
+  site_code        String   @default("") @db.VarChar(255)
+  token_version_id String   @default("") @db.VarChar(255)
+  token_val        String   @default("") @db.VarChar(255)
+  period           String   @default("") @db.VarChar(255)
+  key              String   @default("") @db.VarChar(255)
+  iv               String   @default("") @db.VarChar(255)
+  hamc_key         String   @default("") @db.VarChar(255)
+  integrity_value  String   @default("") @db.VarChar(255)
+  receive_data     String   @db.Text
+  enc_data         String   @default("") @db.VarChar(255)
+  resultcode       String   @default("") @db.VarChar(255)
+  requestno        String   @default("") @db.VarChar(255)
+  enctime          String   @default("") @db.VarChar(255)
+  sitecode         String   @default("") @db.VarChar(255)
+  responseno       String   @default("") @db.VarChar(255)
+  authtype         String   @default("") @db.VarChar(255)
+  name             String   @default("") @db.VarChar(255)
+  utf8_name        String   @default("") @db.VarChar(255)
+  birthdate        String   @default("") @db.VarChar(255)
+  gender           String   @default("") @db.VarChar(255)
+  nationalinfo     String   @default("") @db.VarChar(255)
+  mobile_co        String   @default("") @db.VarChar(255)
+  mobile_no        String   @default("") @db.VarChar(255)
+  ci               String   @default("") @db.VarChar(255)
+  di               String   @default("") @db.VarChar(255)
+  businessno       String   @default("") @db.VarChar(255)
+  receivedata      String   @db.Text
+  status           Int      @default(0)
+  user_id          Int?
+  createdAt        DateTime @db.DateTime(0)
+  updatedAt        DateTime @db.DateTime(0)
+  Users            Users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, map: "userphoneauths_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Users {
+  id                                     Int                     @id @default(autoincrement())
+  username                               String?                 @db.VarChar(255)
+  email                                  String                  @default("") @db.VarChar(255)
+  password                               String                  @default("") @db.VarChar(255)
+  nick_name                              String                  @default("") @db.VarChar(255)
+  name                                   String                  @default("") @db.VarChar(255)
+  phone                                  String?                 @default("") @db.VarChar(255)
+  area1                                  String?                 @default("") @db.VarChar(255)
+  area2                                  String?                 @default("") @db.VarChar(255)
+  area3                                  String?                 @default("") @db.VarChar(255)
+  company                                String?                 @default("") @db.VarChar(255)
+  signup_routes                          Json?
+  profile_url                            String                  @default("") @db.VarChar(255)
+  back_img_url                           String?                 @db.VarChar(255)
+  desc                                   String                  @default("") @db.VarChar(255)
+  salt_key                               String                  @default("") @db.VarChar(255)
+  birth_date                             DateTime?               @db.Date
+  status                                 Int                     @default(0)
+  sms_agree                              Boolean                 @default(false)
+  email_agree                            Boolean                 @default(false)
+  fcm_agree                              Boolean                 @default(false)
+  type                                   Int                     @default(0)
+  social_type                            String                  @default("") @db.VarChar(255)
+  social_id                              String                  @default("") @db.VarChar(255)
+  center_id                              Int?
+  createdAt                              DateTime                @db.DateTime(0)
+  updatedAt                              DateTime                @db.DateTime(0)
+  deletedAt                              DateTime?               @db.DateTime(0)
+  Alarms                                 Alarms[]
+  Auctions                               Auctions[]
+  BikeGetUploads                         BikeGetUploads[]
+  BikeGets_BikeGets_user_idToUsers       BikeGets[]              @relation("BikeGets_user_idToUsers")
+  BikeGets_BikeGets_admin_idToUsers      BikeGets[]              @relation("BikeGets_admin_idToUsers")
+  BikeInspectionReports                  BikeInspectionReports[]
+  BikeProductLikes                       BikeProductLikes[]
+  BikeProductQnas                        BikeProductQnas[]
+  BikeProducts                           BikeProducts[]
+  CenterLikes                            CenterLikes[]
+  ChatRooms_ChatRooms_receiver_idToUsers ChatRooms[]             @relation("ChatRooms_receiver_idToUsers")
+  ChatRooms_ChatRooms_sender_idToUsers   ChatRooms[]             @relation("ChatRooms_sender_idToUsers")
+  Chats                                  Chats[]
+  ElectricBikeQnas                       ElectricBikeQnas[]
+  InventoryLogs                          InventoryLogs[]
+  MileageHistories                       MileageHistories[]
+  MileageStatuses                        MileageStatuses?
+  MileageUsedHistories                   MileageUsedHistories[]
+  PaymentKCPs                            PaymentKCPs[]
+  Payments                               Payments[]
+  PostLikes                              PostLikes[]
+  PostReplies                            PostReplies[]
+  Posts                                  Posts[]
+  Purchases                              Purchases[]
+  RentalBikePricings                     RentalBikePricings[]
+  RentalChangeHistories                  RentalChangeHistories[]
+  RentalMemos                            RentalMemos[]
+  RentalMessages                         RentalMessages[]
+  Rentals                                Rentals[]
+  SharingReservations                    SharingReservations[]
+  UserAdmins                             UserAdmins[]
+  UserAgreements                         UserAgreements[]
+  UserFcmTokens                          UserFcmTokens[]
+  UserLogs                               UserLogs[]
+  UserPhoneAuths                         UserPhoneAuths[]
+  Centers                                Centers?                @relation(fields: [center_id], references: [id], onDelete: Restrict, map: "users_ibfk_1")
+
+  @@index([center_id], map: "center_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model VehicleInsuranceInfoFiles {
+  id                        Int                    @id @default(autoincrement())
+  file_name                 String                 @db.VarChar(255)
+  file_url                  String                 @db.VarChar(255)
+  is_secure                 Boolean                @default(true)
+  vehicle_insurance_info_id Int?
+  createdAt                 DateTime               @db.DateTime(0)
+  updatedAt                 DateTime               @db.DateTime(0)
+  VehicleInsuranceInfos     VehicleInsuranceInfos? @relation(fields: [vehicle_insurance_info_id], references: [id], onDelete: Restrict, map: "vehicleinsuranceinfofiles_ibfk_1")
+
+  @@index([vehicle_insurance_info_id], map: "vehicle_insurance_info_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model VehicleInsuranceInfos {
+  id                          Int                         @id @default(autoincrement())
+  total_price                 BigInt
+  age                         Int
+  vehicle_insurance_id        Int?
+  createdAt                   DateTime                    @db.DateTime(0)
+  updatedAt                   DateTime                    @db.DateTime(0)
+  bodily_injury_2_limit       BigInt
+  is_bodily_injury_2_infinite Boolean                     @default(false)
+  coverage_limit              BigInt
+  VehicleInsuranceInfoFiles   VehicleInsuranceInfoFiles[]
+  VehicleInsurances           VehicleInsurances?          @relation(fields: [vehicle_insurance_id], references: [id], onDelete: Restrict, map: "vehicleinsuranceinfos_ibfk_1")
+
+  @@index([vehicle_insurance_id], map: "vehicle_insurance_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model VehicleInsurances {
+  id                    Int                     @id @default(autoincrement())
+  policy_number         String?                 @db.VarChar(255)
+  company_name          String                  @db.VarChar(255)
+  type                  Int
+  start_date            DateTime                @db.DateTime(0)
+  end_date              DateTime                @db.DateTime(0)
+  vehicle_id            Int?
+  createdAt             DateTime                @db.DateTime(0)
+  updatedAt             DateTime                @db.DateTime(0)
+  insurance_name        String?                 @db.VarChar(255)
+  VehicleInsuranceInfos VehicleInsuranceInfos[]
+  Vehicles              Vehicles?               @relation(fields: [vehicle_id], references: [id], onDelete: Restrict, map: "vehicleinsurances_ibfk_1")
+
+  @@index([vehicle_id], map: "vehicle_id")
+  @@index([end_date], map: "vehicle_insurances_end_date")
+  @@index([start_date], map: "vehicle_insurances_start_date")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model VehicleLogs {
+  id         Int      @id @default(autoincrement())
+  type       Int
+  content    String   @db.Text
+  vehicle_id Int
+  createdAt  DateTime @db.DateTime(0)
+  updatedAt  DateTime @db.DateTime(0)
+  Vehicles   Vehicles @relation(fields: [vehicle_id], references: [id], map: "vehiclelogs_ibfk_1")
+
+  @@index([vehicle_id], map: "vehicle_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model VehicleMemos {
+  id         Int       @id @default(autoincrement())
+  writer     String    @db.VarChar(255)
+  content    String    @db.Text
+  vehicle_id Int?
+  createdAt  DateTime  @db.DateTime(0)
+  updatedAt  DateTime  @db.DateTime(0)
+  Vehicles   Vehicles? @relation(fields: [vehicle_id], references: [id], onDelete: Restrict, map: "vehiclememos_ibfk_1")
+
+  @@index([vehicle_id], map: "vehicle_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Vehicles {
+  id                                          Int                 @id @default(autoincrement())
+  bike_serial                                 String?             @unique(map: "bike_serial") @db.VarChar(255)
+  bike_number                                 String?             @unique(map: "bike_number") @db.VarChar(255)
+  bike_color                                  String              @db.VarChar(255)
+  status                                      Int                 @default(0)
+  subsidy                                     Int?
+  cost_acquisition_tax                        Int?
+  cost_license_plate_fee                      Int?
+  cost_stamp_tax                              Int?
+  price_actual                                Int?
+  bike_model_spec_id                          Int
+  purchase_id                                 Int?
+  current_rental_id                           Int?
+  createdAt                                   DateTime            @db.DateTime(0)
+  updatedAt                                   DateTime            @db.DateTime(0)
+  promotion                                   Int
+  bike_type                                   Int
+  price_bike                                  Int
+  not_owned_reason                            String?             @db.VarChar(255)
+  not_owned_at                                DateTime?           @db.DateTime(0)
+  location_id                                 Int?
+  is_used                                     Boolean             @default(false)
+  admin_extra_chips                           Json?
+  RentalBikes                                 RentalBikes[]
+  Rentals_Rentals_vehicle_idToVehicles        Rentals[]           @relation("Rentals_vehicle_idToVehicles")
+  VehicleInsurances                           VehicleInsurances[]
+  VehicleLogs                                 VehicleLogs[]
+  VehicleMemos                                VehicleMemos[]
+  BikeModelSpecs                              BikeModelSpecs      @relation(fields: [bike_model_spec_id], references: [id], map: "vehicles_ibfk_10188")
+  Purchases                                   Purchases?          @relation(fields: [purchase_id], references: [id], onDelete: Restrict, map: "vehicles_ibfk_10189")
+  Rentals_Vehicles_current_rental_idToRentals Rentals?            @relation("Vehicles_current_rental_idToRentals", fields: [current_rental_id], references: [id], onDelete: Restrict, map: "vehicles_ibfk_10190")
+  Locations                                   Locations?          @relation(fields: [location_id], references: [id], onDelete: Restrict, map: "vehicles_ibfk_10191")
+
+  @@index([bike_model_spec_id], map: "bike_model_spec_id")
+  @@index([current_rental_id], map: "current_rental_id")
+  @@index([location_id], map: "location_id")
+  @@index([purchase_id], map: "purchase_id")
+}
+
+enum PurchaseMessages_type {
+  SMS
+  LMS
+  MMS
+}
+
+enum PurchaseMessages_content_type {
+  COMM
+  AD
+}
+
+enum PurchaseMessages_status {
+  REQUESTED
+  SENT
+  FAILED
+}

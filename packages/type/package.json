@@ -1,0 +1,14 @@
+{
+  "name": "@backend-template/type",
+  "description": "Shared TypeScript types for the backend-template monorepo",
+  "author": "LieuNyan",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./interface.ts",
+      "default": "./interface.ts"
+    }
+  },
+  "types": "./interface.ts"
+}

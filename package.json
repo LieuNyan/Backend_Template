@@ -6,7 +6,9 @@
   "scripts": {
     "prisma:generate": "pnpm --filter @backend-template/prisma generate",
     "prisma:push:local": "NODE_ENV=local pnpm --filter @backend-template/prisma push",
-    "main-service:local": "NODE_ENV=local pnpm --filter @backend-template/main-service start:watch"
+    "prisma:pull:local": "NODE_ENV=local pnpm --filter @backend-template/prisma pull",
+    "main-service:local": "NODE_ENV=local pnpm --filter @backend-template/main-service start:watch",
+    "client-nuxt:dev": "pnpm --filter @backend-template/client-nuxt dev"
   },
   "dependencies": {
     "dotenv-flow": "^4.1.0"
